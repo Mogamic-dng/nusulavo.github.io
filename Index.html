@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Makalah Singkat AVO-meter oleh Novan (2026)">
+    <title>AVO-meter: Makalah Singkat - Novan</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-body: #f8fafc;
+            --bg-panel: #ffffff;
+            --text-main: #334155;
+            --text-heading: #0f172a;
+            --border: #e2e8f0;
+            --sidebar-w: 260px;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary: #60a5fa;
+            --bg-body: #0f172a;
+            --bg-panel: #1e293b;
+            --text-main: #cbd5e1;
+            --text-heading: #f1f5f9;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow: hidden; /* Prevent body scroll, handle in main */
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: var(--sidebar-w);
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        nav header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        nav button.nav-link {
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 6px;
+            color: var(--text-main);
+            font-weight: 500;
+            width: 100%;
+            border: 1px solid transparent; /* For focus state */
+        }
+
+        nav button.nav-link:hover {
+            background-color: var(--bg-body);
+            color: var(--primary);
+        }
+
+        nav button.nav-link.active {
+            background-color: var(--primary);
+            color: #ffffff;
+        }
+
+        nav button.nav-link:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Toggle Dark Mode Button */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        article {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 { color: var(--text-heading); border-left: 4px solid var(--primary); padding-left: 15px; margin-top: 10px; }
+        h3 { color: var(--text-heading); margin-top: 30px; }
+        p, li { line-height: 1.7; margin-bottom: 1em; }
+        
+        .quote-box {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 6px;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--bg-panel);
+            color: var(--text-main);
+        }
+        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+        th { background-color: var(--bg-body); color: var(--text-heading); }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; height: auto; overflow: auto; }
+            nav {
+                width: 100%;
+                height: auto;
+                position: sticky;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 10px 15px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            nav header { border: none; margin: 0; padding: 0; }
+            .nav-items { display: none; /* Simplifikasi menu mobile bisa ditambahkan JS hamburger nanti */ position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-panel); padding: 10px; border-bottom: 1px solid var(--border); flex-direction: column; }
+            .nav-items.show { display: flex; }
+            #mobile-menu-btn { display: block; background: none; border: 1px solid var(--border); color: var(--text-main); padding: 5px 10px; border-radius: 4px; }
+            main { padding: 20px; overflow: visible; }
+        }
+        @media (min-width: 769px) {
+            #mobile-menu-btn { display: none; }
+            .nav-items { display: flex !important; flex-direction: column; width: 100%; margin-top: 20px; }
+        }
+
+        /* Print Styles */
+        @media print {
+            nav, .theme-toggle, #mobile-menu-btn { display: none; }
+            main { padding: 0; margin: 0; overflow: visible; }
+            body { background: white; color: black; height: auto; display: block; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav aria-label="Navigasi Utama">
+        <header>
+            <h1>AVO-meter</h1>
+            <button id="mobile-menu-btn" aria-label="Menu">☰</button>
+        </header>
+        <div class="nav-items" id="nav-container">
+            </div>
+        <div style="margin-top: auto; padding-top: 20px;">
+            <button id="theme-btn" class="theme-toggle">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <main role="main" id="main-content" tabindex="-1">
+        <article id="article-content">
+            </article>
+        <footer>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 40px 0;">
+            <p style="font-size: 0.9em; opacity: 0.7; text-align: center;">&copy; 2026 Novan. Dibuat berdasarkan Makalah AVO-meter.</p>
+        </footer>
+    </main>
+
+    <script>
+        /**
+         * MODEL
+         * Data diambil dari dokumen Word yang diunggah.
+         */
+        const Model = {
+            pages: {
+                "home": {
+                    title: "Beranda",
+                    heading: "Makalah AVO-meter",
+                    content: `
+                        <div class="quote-box">
+                            [cite_start]<p>"Makalah singkat ini disusun untuk memberikan gambaran komprehensif namun ringkas mengenai AVO-meter (Arus, Tegangan, Hambatan)."[span_0](end_span)</p>
+                        </div>
+                        [span_1](start_span)<p><strong>Disusun oleh:</strong> Novan <br><strong>Tahun:</strong> 2026[span_1](end_span)</p>
+                        <h3>Kata Pengantar</h3>
+                        [span_2](start_span)<p>Tujuannya adalah membekali pelajar dan hobiis elektronika dengan pemahaman dasar, prinsip kerja, serta perawatan AVO-meter[span_2](end_span). [span_3](start_span)Semoga makalah ini berguna sebagai titik awal eksplorasi di bidang pengukuran listrik[span_3](end_span).</p>
+                    `
+                },
+                "bab1": {
+                    title: "BAB 1: Pendahuluan",
+                    heading: "BAB 1 - Pendahuluan",
+                    content: `
+                        <h3>1.1 Latar Belakang</h3>
+                        <p>Pengukuran besaran listrik adalah keterampilan dasar. [span_4](start_span)AVO-meter (multimeter) menyediakan solusi serbaguna untuk mengukur arus, tegangan, dan hambatan[span_4](end_span). [span_5](start_span)Pemahaman yang baik penting untuk diagnosis rangkaian dan perbaikan[span_5](end_span).</p>
+                        <h3>1.2 Tujuan Penulisan</h3>
+                        <ul>
+                            [span_6](start_span)<li>Menjelaskan pengertian dan prinsip kerja AVO-meter[span_6](end_span).</li>
+                            [span_7](start_span)<li>Menguraikan komponen utama dan jenis-jenisnya[span_7](end_span).</li>
+                            [span_8](start_span)<li>Memberi panduan praktis penggunaan, kalibrasi, dan perawatan[span_8](end_span).</li>
+                        </ul>
+                        <h3>1.3 Ruang Lingkup</h3>
+                        [span_9](start_span)<p>Fokus meliputi definisi, klasifikasi (analog vs digital), prosedur pengukuran dasar, serta keselamatan penggunaan[span_9](end_span). [span_10](start_span)Topik lanjutan seperti desain rangkaian internal tidak dibahas mendalam[span_10](end_span).</p>
+                    `
+                },
+                "bab2": {
+                    title: "BAB 2: Teori Dasar",
+                    heading: "BAB 2 - Pengertian & Prinsip",
+                    content: `
+                        <h3>2.1 Definisi</h3>
+                        [span_11](start_span)<p>AVO-meter adalah alat ukur untuk Arus (A), Tegangan (V), dan Hambatan (Ω)[span_11](end_span). [span_12](start_span)Dalam praktik modern disebut multimeter, seringkali mencakup fitur kapasitansi dan frekuensi[span_12](end_span).</p>
+                        <h3>2.3 Prinsip Kerja</h3>
+                        <ul>
+                            [span_13](start_span)<li><strong>Tegangan (V):</strong> Diukur secara paralel dengan input impedance tinggi [cite: 20-21].</li>
+                            [cite_start]<li><strong>Arus (A):</strong> Diukur secara seri menggunakan shunt resistor[span_13](end_span).</li>
+                            [span_14](start_span)<li><strong>Hambatan (Ω):</strong> Alat mengirim arus kecil, mengukur tegangan, lalu menghitung R = V/I [cite: 22-23].</li>
+                        </ul>
+                        <h3>2.4 Jenis-jenis</h3>
+                        [cite_start]<p>Terbagi menjadi <strong>Analog</strong> (jarum, indikasi kontinu) dan <strong>Digital</strong> (numerik, akurasi tinggi)[span_14](end_span).</p>
+                    `
+                },
+                "bab3": {
+                    title: "BAB 3: Praktik Pengukuran",
+                    heading: "BAB 3 - Peralatan & Penggunaan",
+                    content: `
+                        <h3>3.1 Komponen Utama</h3>
+                        [span_15](start_span)<p>Meliputi sakelar pemilih (selector), terminal input (probe), layar/skala, dan fuse proteksi [cite: 30-31].</p>
+                        [cite_start]<h3>3.3 Langkah Penggunaan [cite: 33-40]</h3>
+                        <p><strong>A. Tegangan DC:</strong> Set ke VDC, hubungkan probe paralel (+ ke +, - ke -).</p>
+                        <p><strong>B. Arus DC:</strong> Set ke mA/A, hubungkan alat secara <strong>seri</strong>. Hati-hati limit arus.</p>
+                        <p><strong>C. Hambatan:</strong> <strong>Matikan daya</strong> rangkaian. Hubungkan probe ke komponen.</p>
+                        <div class="quote-box" style="border-color: #ef4444;">
+                            <strong>Penting:</strong> Jangan mengukur hambatan pada rangkaian berdaya. [cite_start]Jangan ukur tegangan melebihi batas alat[span_15](end_span).
+                        </div>
+                    `
+                },
+                "perawatan": {
+                    title: "Perawatan & Kalibrasi",
+                    heading: "Kalibrasi dan Perawatan",
+                    content: `
+                        <h3>Pemeriksaan Dasar</h3>
+                        <p>Lakukan <em>Zero Check</em> pada mode Ohm (hasil harus ~0). [span_16](start_span)Ganti baterai jika lemah dan pastikan sekering sesuai spesifikasi [cite: 44-46].</p>
+                        [cite_start]<h3>Perbandingan Analog vs Digital[span_16](end_span)</h3>
+                        <table>
+                            <tr><th>Aspek</th><th>Analog</th><th>Digital</th></tr>
+                            <tr><td>Pembacaan</td><td>Jarum (tren cepat)</td><td>Angka (mudah dibaca)</td></tr>
+                            <tr><td>Akurasi</td><td>Terbatas</td><td>Lebih tinggi</td></tr>
+                            <tr><td>Daya Tahan</td><td>Sederhana & robust</td><td>Tergantung elektronik</td></tr>
+                        </table>
+                    `
+                }
+            }
+        };
+
+        /**
+         * VIEW
+         * Menangani manipulasi DOM dan Tampilan
+         */
+        const View = {
+            navContainer: document.getElementById('nav-container'),
+            articleContent: document.getElementById('article-content'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            themeBtn: document.getElementById('theme-btn'),
+
+            renderNav: function(pages, activeKey) {
+                this.navContainer.innerHTML = '';
+                Object.keys(pages).forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = `nav-link ${key === activeKey ? 'active' : ''}`;
+                    btn.textContent = pages[key].title;
+                    btn.onclick = () => Controller.navigateTo(key);
+                    
+                    // Accessibility
+                    if (key === activeKey) btn.setAttribute('aria-current', 'page');
+                    
+                    this.navContainer.appendChild(btn);
+                });
+            },
+
+            renderPage: function(pageData) {
+                // Gunakan innerHTML karena data kita berisi formatting HTML (trusted source)
+                // Ini aman karena datanya lokal di dalam script, bukan input user eksternal.
+                this.articleContent.innerHTML = `
+                    <h2 style="border:none; padding:0; font-size: 2rem;">${pageData.heading}</h2>
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 30px;">
+                    <div style="animation: fadeIn 0.4s ease-out;">
+                        ${pageData.content}
+                    </div>
+                `;
+                
+                // Set focus ke main content untuk a11y setelah navigasi
+                document.getElementById('main-content').focus();
+                
+                // Mobile menu auto-close
+                if(window.innerWidth <= 768) {
+                    this.navContainer.classList.remove('show');
+                }
+            },
+
+            toggleTheme: function() {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.body.removeAttribute('data-theme');
+                    this.themeBtn.textContent = '🌙 Dark Mode';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    this.themeBtn.textContent = '☀️ Light Mode';
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+        };
+
+        /**
+         * CONTROLLER
+         * Menangani Logika dan Event
+         */
+        const Controller = {
+            init: function() {
+                // 1. Setup Theme
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') View.toggleTheme();
+                View.themeBtn.onclick = () => View.toggleTheme();
+
+                // 2. Setup Routing
+                window.addEventListener('hashchange', () => this.handleRoute());
+                
+                // 3. Mobile Menu
+                View.mobileMenuBtn.onclick = () => {
+                    View.navContainer.classList.toggle('show');
+                };
+
+                // 4. Initial Load
+                this.handleRoute();
+
+                // Style animasi
+                const style = document.createElement('style');
+                style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`;
+                document.head.appendChild(style);
+            },
+
+            navigateTo: function(key) {
+                window.location.hash = key;
+            },
+
+            handleRoute: function() {
+                const hash = window.location.hash.substring(1) || 'home';
+                const pageData = Model.pages[hash] || Model.pages['home'];
+                
+                View.renderNav(Model.pages, hash);
+                View.renderPage(pageData);
+                
+                // Update Title Document
+                document.title = `${pageData.title} - Novan (2026)`;
+            }
+        };
+
+        // Jalankan Aplikasi
+        document.addEventListener('DOMContentLoaded', () => Controller.init());
+
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Makalah Singkat AVO-meter oleh Novan (2026)">
+    <title>AVO-meter: Makalah Singkat - Novan</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-body: #f8fafc;
+            --bg-panel: #ffffff;
+            --text-main: #334155;
+            --text-heading: #0f172a;
+            --border: #e2e8f0;
+            --sidebar-w: 260px;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary: #60a5fa;
+            --bg-body: #0f172a;
+            --bg-panel: #1e293b;
+            --text-main: #cbd5e1;
+            --text-heading: #f1f5f9;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow: hidden; /* Prevent body scroll, handle in main */
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: var(--sidebar-w);
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        nav header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        nav button.nav-link {
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 6px;
+            color: var(--text-main);
+            font-weight: 500;
+            width: 100%;
+            border: 1px solid transparent; /* For focus state */
+        }
+
+        nav button.nav-link:hover {
+            background-color: var(--bg-body);
+            color: var(--primary);
+        }
+
+        nav button.nav-link.active {
+            background-color: var(--primary);
+            color: #ffffff;
+        }
+
+        nav button.nav-link:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Toggle Dark Mode Button */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        article {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 { color: var(--text-heading); border-left: 4px solid var(--primary); padding-left: 15px; margin-top: 10px; }
+        h3 { color: var(--text-heading); margin-top: 30px; }
+        p, li { line-height: 1.7; margin-bottom: 1em; }
+        
+        .quote-box {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 6px;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--bg-panel);
+            color: var(--text-main);
+        }
+        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+        th { background-color: var(--bg-body); color: var(--text-heading); }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; height: auto; overflow: auto; }
+            nav {
+                width: 100%;
+                height: auto;
+                position: sticky;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 10px 15px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            nav header { border: none; margin: 0; padding: 0; }
+            .nav-items { display: none; /* Simplifikasi menu mobile bisa ditambahkan JS hamburger nanti */ position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-panel); padding: 10px; border-bottom: 1px solid var(--border); flex-direction: column; }
+            .nav-items.show { display: flex; }
+            #mobile-menu-btn { display: block; background: none; border: 1px solid var(--border); color: var(--text-main); padding: 5px 10px; border-radius: 4px; }
+            main { padding: 20px; overflow: visible; }
+        }
+        @media (min-width: 769px) {
+            #mobile-menu-btn { display: none; }
+            .nav-items { display: flex !important; flex-direction: column; width: 100%; margin-top: 20px; }
+        }
+
+        /* Print Styles */
+        @media print {
+            nav, .theme-toggle, #mobile-menu-btn { display: none; }
+            main { padding: 0; margin: 0; overflow: visible; }
+            body { background: white; color: black; height: auto; display: block; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav aria-label="Navigasi Utama">
+        <header>
+            <h1>AVO-meter</h1>
+            <button id="mobile-menu-btn" aria-label="Menu">☰</button>
+        </header>
+        <div class="nav-items" id="nav-container">
+            </div>
+        <div style="margin-top: auto; padding-top: 20px;">
+            <button id="theme-btn" class="theme-toggle">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <main role="main" id="main-content" tabindex="-1">
+        <article id="article-content">
+            </article>
+        <footer>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 40px 0;">
+            <p style="font-size: 0.9em; opacity: 0.7; text-align: center;">&copy; 2026 Novan. Dibuat berdasarkan Makalah AVO-meter.</p>
+        </footer>
+    </main>
+
+    <script>
+        /**
+         * MODEL
+         * Data diambil dari dokumen Word yang diunggah.
+         */
+        const Model = {
+            pages: {
+                "home": {
+                    title: "Beranda",
+                    heading: "Makalah AVO-meter",
+                    content: `
+                        <div class="quote-box">
+                            [cite_start]<p>"Makalah singkat ini disusun untuk memberikan gambaran komprehensif namun ringkas mengenai AVO-meter (Arus, Tegangan, Hambatan)."[span_0](end_span)</p>
+                        </div>
+                        [span_1](start_span)<p><strong>Disusun oleh:</strong> Novan <br><strong>Tahun:</strong> 2026[span_1](end_span)</p>
+                        <h3>Kata Pengantar</h3>
+                        [span_2](start_span)<p>Tujuannya adalah membekali pelajar dan hobiis elektronika dengan pemahaman dasar, prinsip kerja, serta perawatan AVO-meter[span_2](end_span). [span_3](start_span)Semoga makalah ini berguna sebagai titik awal eksplorasi di bidang pengukuran listrik[span_3](end_span).</p>
+                    `
+                },
+                "bab1": {
+                    title: "BAB 1: Pendahuluan",
+                    heading: "BAB 1 - Pendahuluan",
+                    content: `
+                        <h3>1.1 Latar Belakang</h3>
+                        <p>Pengukuran besaran listrik adalah keterampilan dasar. [span_4](start_span)AVO-meter (multimeter) menyediakan solusi serbaguna untuk mengukur arus, tegangan, dan hambatan[span_4](end_span). [span_5](start_span)Pemahaman yang baik penting untuk diagnosis rangkaian dan perbaikan[span_5](end_span).</p>
+                        <h3>1.2 Tujuan Penulisan</h3>
+                        <ul>
+                            [span_6](start_span)<li>Menjelaskan pengertian dan prinsip kerja AVO-meter[span_6](end_span).</li>
+                            [span_7](start_span)<li>Menguraikan komponen utama dan jenis-jenisnya[span_7](end_span).</li>
+                            [span_8](start_span)<li>Memberi panduan praktis penggunaan, kalibrasi, dan perawatan[span_8](end_span).</li>
+                        </ul>
+                        <h3>1.3 Ruang Lingkup</h3>
+                        [span_9](start_span)<p>Fokus meliputi definisi, klasifikasi (analog vs digital), prosedur pengukuran dasar, serta keselamatan penggunaan[span_9](end_span). [span_10](start_span)Topik lanjutan seperti desain rangkaian internal tidak dibahas mendalam[span_10](end_span).</p>
+                    `
+                },
+                "bab2": {
+                    title: "BAB 2: Teori Dasar",
+                    heading: "BAB 2 - Pengertian & Prinsip",
+                    content: `
+                        <h3>2.1 Definisi</h3>
+                        [span_11](start_span)<p>AVO-meter adalah alat ukur untuk Arus (A), Tegangan (V), dan Hambatan (Ω)[span_11](end_span). [span_12](start_span)Dalam praktik modern disebut multimeter, seringkali mencakup fitur kapasitansi dan frekuensi[span_12](end_span).</p>
+                        <h3>2.3 Prinsip Kerja</h3>
+                        <ul>
+                            [span_13](start_span)<li><strong>Tegangan (V):</strong> Diukur secara paralel dengan input impedance tinggi [cite: 20-21].</li>
+                            [cite_start]<li><strong>Arus (A):</strong> Diukur secara seri menggunakan shunt resistor[span_13](end_span).</li>
+                            [span_14](start_span)<li><strong>Hambatan (Ω):</strong> Alat mengirim arus kecil, mengukur tegangan, lalu menghitung R = V/I [cite: 22-23].</li>
+                        </ul>
+                        <h3>2.4 Jenis-jenis</h3>
+                        [cite_start]<p>Terbagi menjadi <strong>Analog</strong> (jarum, indikasi kontinu) dan <strong>Digital</strong> (numerik, akurasi tinggi)[span_14](end_span).</p>
+                    `
+                },
+                "bab3": {
+                    title: "BAB 3: Praktik Pengukuran",
+                    heading: "BAB 3 - Peralatan & Penggunaan",
+                    content: `
+                        <h3>3.1 Komponen Utama</h3>
+                        [span_15](start_span)<p>Meliputi sakelar pemilih (selector), terminal input (probe), layar/skala, dan fuse proteksi [cite: 30-31].</p>
+                        [cite_start]<h3>3.3 Langkah Penggunaan [cite: 33-40]</h3>
+                        <p><strong>A. Tegangan DC:</strong> Set ke VDC, hubungkan probe paralel (+ ke +, - ke -).</p>
+                        <p><strong>B. Arus DC:</strong> Set ke mA/A, hubungkan alat secara <strong>seri</strong>. Hati-hati limit arus.</p>
+                        <p><strong>C. Hambatan:</strong> <strong>Matikan daya</strong> rangkaian. Hubungkan probe ke komponen.</p>
+                        <div class="quote-box" style="border-color: #ef4444;">
+                            <strong>Penting:</strong> Jangan mengukur hambatan pada rangkaian berdaya. [cite_start]Jangan ukur tegangan melebihi batas alat[span_15](end_span).
+                        </div>
+                    `
+                },
+                "perawatan": {
+                    title: "Perawatan & Kalibrasi",
+                    heading: "Kalibrasi dan Perawatan",
+                    content: `
+                        <h3>Pemeriksaan Dasar</h3>
+                        <p>Lakukan <em>Zero Check</em> pada mode Ohm (hasil harus ~0). [span_16](start_span)Ganti baterai jika lemah dan pastikan sekering sesuai spesifikasi [cite: 44-46].</p>
+                        [cite_start]<h3>Perbandingan Analog vs Digital[span_16](end_span)</h3>
+                        <table>
+                            <tr><th>Aspek</th><th>Analog</th><th>Digital</th></tr>
+                            <tr><td>Pembacaan</td><td>Jarum (tren cepat)</td><td>Angka (mudah dibaca)</td></tr>
+                            <tr><td>Akurasi</td><td>Terbatas</td><td>Lebih tinggi</td></tr>
+                            <tr><td>Daya Tahan</td><td>Sederhana & robust</td><td>Tergantung elektronik</td></tr>
+                        </table>
+                    `
+                }
+            }
+        };
+
+        /**
+         * VIEW
+         * Menangani manipulasi DOM dan Tampilan
+         */
+        const View = {
+            navContainer: document.getElementById('nav-container'),
+            articleContent: document.getElementById('article-content'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            themeBtn: document.getElementById('theme-btn'),
+
+            renderNav: function(pages, activeKey) {
+                this.navContainer.innerHTML = '';
+                Object.keys(pages).forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = `nav-link ${key === activeKey ? 'active' : ''}`;
+                    btn.textContent = pages[key].title;
+                    btn.onclick = () => Controller.navigateTo(key);
+                    
+                    // Accessibility
+                    if (key === activeKey) btn.setAttribute('aria-current', 'page');
+                    
+                    this.navContainer.appendChild(btn);
+                });
+            },
+
+            renderPage: function(pageData) {
+                // Gunakan innerHTML karena data kita berisi formatting HTML (trusted source)
+                // Ini aman karena datanya lokal di dalam script, bukan input user eksternal.
+                this.articleContent.innerHTML = `
+                    <h2 style="border:none; padding:0; font-size: 2rem;">${pageData.heading}</h2>
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 30px;">
+                    <div style="animation: fadeIn 0.4s ease-out;">
+                        ${pageData.content}
+                    </div>
+                `;
+                
+                // Set focus ke main content untuk a11y setelah navigasi
+                document.getElementById('main-content').focus();
+                
+                // Mobile menu auto-close
+                if(window.innerWidth <= 768) {
+                    this.navContainer.classList.remove('show');
+                }
+            },
+
+            toggleTheme: function() {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.body.removeAttribute('data-theme');
+                    this.themeBtn.textContent = '🌙 Dark Mode';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    this.themeBtn.textContent = '☀️ Light Mode';
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+        };
+
+        /**
+         * CONTROLLER
+         * Menangani Logika dan Event
+         */
+        const Controller = {
+            init: function() {
+                // 1. Setup Theme
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') View.toggleTheme();
+                View.themeBtn.onclick = () => View.toggleTheme();
+
+                // 2. Setup Routing
+                window.addEventListener('hashchange', () => this.handleRoute());
+                
+                // 3. Mobile Menu
+                View.mobileMenuBtn.onclick = () => {
+                    View.navContainer.classList.toggle('show');
+                };
+
+                // 4. Initial Load
+                this.handleRoute();
+
+                // Style animasi
+                const style = document.createElement('style');
+                style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`;
+                document.head.appendChild(style);
+            },
+
+            navigateTo: function(key) {
+                window.location.hash = key;
+            },
+
+            handleRoute: function() {
+                const hash = window.location.hash.substring(1) || 'home';
+                const pageData = Model.pages[hash] || Model.pages['home'];
+                
+                View.renderNav(Model.pages, hash);
+                View.renderPage(pageData);
+                
+                // Update Title Document
+                document.title = `${pageData.title} - Novan (2026)`;
+            }
+        };
+
+        // Jalankan Aplikasi
+        document.addEventListener('DOMContentLoaded', () => Controller.init());
+
+    </script>
+</body>
+</html>
