@@ -6,16 +6,30 @@
     <title>AVO-meter: Makalah Singkat - Novan</title>
     <style>
         :root {
-            --primary: #2563eb; --bg: #f8fafc; --panel: #ffffff;
-            --text: #334155; --heading: #0f172a; --border: #e2e8f0;
+            --primary: #0066ff; /* Biru modern */
+            --primary-dark: #0052d4;
+            --accent: #00d4ff; /* Biru muda untuk aksen */
+            --bg: #ffffff; /* Putih bersih */
+            --panel: #f8fafc; /* Abu-abu sangat muda */
+            --text: #1a1a1a; /* Hampir hitam */
+            --heading: #0a0a0a; /* Hitam pekat */
+            --border: #e5e7eb; /* Abu-abu muda */
+            --shadow: rgba(0, 0, 0, 0.08);
             --sidebar-w: 260px;
             --mobile-breakpoint: 768px;
         }
         [data-theme="dark"] {
-            --bg: #0f172a; --panel: #1e293b; --text: #cbd5e1;
-            --heading: #f1f5f9; --border: #334155;
+            --primary: #3b82f6; /* Biru lebih terang untuk mode gelap */
+            --primary-dark: #60a5fa;
+            --accent: #38bdf8; /* Cyan biru */
+            --bg: #0a0a0a; /* Hitam pekat */
+            --panel: #111111; /* Hitam dengan sedikit cahaya */
+            --text: #f0f0f0; /* Putih dengan sedikit abu */
+            --heading: #ffffff; /* Putih murni */
+            --border: #333333; /* Abu-abu gelap */
+            --shadow: rgba(255, 255, 255, 0.05);
         }
-        
+
         /* Mode mobile eksplisit (untuk pengujian) */
         body.mobile-mode {
             flex-direction: column;
@@ -47,20 +61,33 @@
             flex-direction: column;
             gap: 10px;
         }
-        
+
         * { 
             box-sizing: border-box; 
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
         }
+        
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif; 
             margin: 0; 
             display: flex;
             height: 100vh; 
             background: var(--bg); 
             color: var(--text); 
             overflow: hidden;
+            line-height: 1.6;
         }
+        
+        /* Animasi fade-in untuk body */
+        body {
+            animation: bodyFadeIn 0.5s ease-out;
+        }
+        
+        @keyframes bodyFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         nav {
             width: var(--sidebar-w); 
             background: var(--panel); 
@@ -70,116 +97,388 @@
             padding: 20px; 
             flex-shrink: 0;
             overflow-y: auto;
+            box-shadow: 2px 0 10px var(--shadow);
+            animation: slideInLeft 0.5s ease-out;
         }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
         nav h1 { 
-            font-size: 1.5rem; 
+            font-size: 1.6rem; 
             color: var(--primary); 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
             border-bottom: 2px solid var(--border);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
+            font-weight: 700;
+            position: relative;
+            animation: fadeInDown 0.6s ease-out 0.1s both;
         }
+        
+        /* Efek garis bawah animasi untuk judul */
+        nav h1::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        nav h1:hover::after {
+            width: 100%;
+        }
+        
+        @keyframes fadeInDown {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
         .nav-link {
-            background: none; 
+            background: transparent; 
             border: 1px solid transparent; 
             text-align: left;
-            padding: 12px 16px; 
+            padding: 14px 16px; 
             cursor: pointer; 
             color: var(--text); 
             font-weight: 500;
-            border-radius: 6px; 
+            border-radius: 8px; 
             width: 100%; 
             margin-bottom: 8px;
             font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
         }
+        
+        /* Animasi stagger untuk nav link */
+        .nav-link:nth-child(1) { animation-delay: 0.1s; }
+        .nav-link:nth-child(2) { animation-delay: 0.15s; }
+        .nav-link:nth-child(3) { animation-delay: 0.2s; }
+        .nav-link:nth-child(4) { animation-delay: 0.25s; }
+        .nav-link:nth-child(5) { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Efek hover dengan bayangan dan transformasi */
         .nav-link:hover, .nav-link:focus { 
-            background: color-mix(in srgb, var(--primary) 10%, transparent); 
+            background: var(--panel); 
             color: var(--primary); 
-            border-color: var(--primary);
+            border-color: var(--border);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow);
         }
+        
+        /* Efek garis bawah saat hover */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        
         .nav-link.active { 
-            background: var(--primary); 
+            background: linear-gradient(135deg, var(--primary), var(--accent)); 
             color: white; 
             font-weight: 600;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
+            transform: translateY(-2px);
         }
+        
+        .nav-link.active::after {
+            display: none;
+        }
+        
         .nav-link:focus { 
             outline: 2px solid var(--primary); 
             outline-offset: 2px; 
         }
+        
         main { 
             flex: 1; 
             padding: 30px; 
             overflow-y: auto; 
-            outline: none; 
+            outline: none;
+            animation: fadeIn 0.6s ease-out 0.2s both;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         article { 
             max-width: 800px; 
             margin: 0 auto; 
             line-height: 1.6;
+            animation: contentSlideUp 0.5s ease-out;
         }
+        
+        @keyframes contentSlideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
         h2 { 
             color: var(--heading); 
             border-left: 4px solid var(--primary); 
-            padding-left: 15px; 
+            padding-left: 18px; 
             margin-top: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: slideInRight 0.5s ease-out;
+            position: relative;
         }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Efek gradien di belakang judul */
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
         h3 {
             color: var(--heading);
-            margin-top: 1.5em;
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            position: relative;
+            animation: fadeIn 0.6s ease-out;
         }
+        
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        p, ul, ol {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        ul, ol {
+            padding-left: 1.5em;
+        }
+        
+        li {
+            margin-bottom: 0.5em;
+            position: relative;
+            animation: fadeInLeft 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        /* Animasi stagger untuk list items */
+        li:nth-child(1) { animation-delay: 0.1s; }
+        li:nth-child(2) { animation-delay: 0.2s; }
+        li:nth-child(3) { animation-delay: 0.3s; }
+        li:nth-child(4) { animation-delay: 0.4s; }
+        li:nth-child(5) { animation-delay: 0.5s; }
+        
+        @keyframes fadeInLeft {
+            from { transform: translateX(-10px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
         table { 
             width: 100%; 
-            border-collapse: collapse; 
-            margin: 20px 0; 
+            border-collapse: separate; 
+            border-spacing: 0;
+            margin: 25px 0; 
             background: var(--panel); 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px var(--shadow);
+            border-radius: 10px;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
         }
+        
         th, td { 
-            border: 1px solid var(--border); 
-            padding: 12px; 
+            border-bottom: 1px solid var(--border); 
+            padding: 15px; 
             text-align: left;
         }
+        
         th { 
-            background: color-mix(in srgb, var(--primary) 10%, var(--panel)); 
-            color: var(--heading); 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: white; 
             font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
         }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr {
+            transition: background-color 0.3s ease;
+        }
+        
+        tr:hover {
+            background-color: rgba(0, 102, 255, 0.05);
+        }
+        
+        td {
+            transition: all 0.3s ease;
+        }
+        
+        tr:hover td {
+            transform: translateX(5px);
+        }
+        
         .quote { 
-            background: var(--panel); 
-            border-left: 5px solid var(--primary); 
-            padding: 20px; 
-            border-radius: 4px; 
+            background: linear-gradient(to right, rgba(0, 102, 255, 0.05), rgba(0, 212, 255, 0.05)); 
+            border-left: 4px solid var(--accent); 
+            padding: 22px; 
+            border-radius: 8px; 
             font-style: italic;
-            margin: 20px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin: 25px 0;
+            box-shadow: 0 5px 10px var(--shadow);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInRight 0.6s ease-out;
         }
+        
+        @keyframes fadeInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Efek latar belakang untuk quote */
+        .quote::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.1;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
         .controls {
             display: flex;
             gap: 10px;
             margin-top: 20px;
             flex-wrap: wrap;
+            animation: fadeIn 0.8s ease-out 0.4s both;
         }
+        
         .control-btn {
-            padding: 8px 12px;
+            padding: 10px 16px;
             cursor: pointer;
             background: var(--panel);
             border: 1px solid var(--border);
             color: var(--text);
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
         }
+        
+        /* Efek ripple untuk tombol */
+        .control-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .control-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+        
         .control-btn:hover {
             background: var(--bg);
             border-color: var(--primary);
-        }
-        .control-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow);
         }
         
+        .control-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
+        }
+        
+        /* Pulse animation untuk tombol aktif */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 102, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0); }
+        }
+        
+        .control-btn.active {
+            animation: pulse 2s infinite;
+        }
+
         /* Responsif alami (tanpa mode mobile eksplisit) */
         @media (max-width: 768px) {
             body:not(.mobile-mode) {
@@ -195,6 +494,7 @@
                 overflow-x: auto;
                 padding: 10px;
                 z-index: 100;
+                box-shadow: 0 2px 10px var(--shadow);
             }
             body:not(.mobile-mode) nav h1 {
                 display: none;
@@ -204,6 +504,8 @@
                 white-space: nowrap;
                 margin-right: 10px;
                 margin-bottom: 0;
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
             body:not(.mobile-mode) main {
                 padding: 20px;
@@ -212,43 +514,119 @@
                 flex-direction: column;
                 gap: 10px;
             }
-            
+
             /* Tabel responsif di mobile */
             table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
         }
-        
+
         /* Animasi untuk konten */
         #app {
             animation: fadeIn 0.5s ease-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Scrollbar styling */
+
+        /* Scrollbar styling modern */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg);
+            background: var(--panel);
+            border-radius: 5px;
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: color-mix(in srgb, var(--primary) 50%, var(--border));
+            background: linear-gradient(to bottom, var(--primary-dark), var(--primary));
         }
-        
+
         /* Untuk mode mobile eksplisit - atur tinggi konten */
         body.mobile-mode #main-content {
             max-height: calc(100vh - 70px);
+        }
+        
+        /* Efek highlight untuk teks penting */
+        strong {
+            color: var(--primary);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        /* Animasi loading untuk konten */
+        .content-loading {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Animasi untuk elemen yang muncul saat scroll */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Garis pemisah dengan animasi */
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            margin: 30px 0;
+            position: relative;
+            overflow: visible;
+            animation: expandWidth 1s ease-out;
+        }
+        
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        hr::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
         }
     </style>
 </head>
@@ -380,26 +758,61 @@
                         ${Model[k].t}
                     </button>
                 `).join('');
+                
+                // Tambahkan animasi untuk navigasi
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach((link, index) => {
+                    link.style.animationDelay = `${0.1 + index * 0.05}s`;
+                });
             },
-            
+
             renderContent: (key) => {
                 const page = Model[key] || Model.home;
-                document.getElementById('app').innerHTML = `
-                    <h2>${page.h}</h2>
-                    <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
-                    <div class="content">${page.c}</div>
-                `;
-                document.getElementById('main-content').focus();
+                
+                // Tambahkan efek loading singkat
+                const app = document.getElementById('app');
+                app.classList.add('content-loading');
+                
+                setTimeout(() => {
+                    app.innerHTML = `
+                        <h2>${page.h}</h2>
+                        <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
+                        <div class="content">${page.c}</div>
+                    `;
+                    
+                    // Hapus class loading setelah konten dimuat
+                    app.classList.remove('content-loading');
+                    
+                    // Tambahkan animasi untuk elemen baru
+                    Controller.animateContent();
+                    
+                    // Set focus ke konten utama untuk aksesibilitas
+                    document.getElementById('main-content').focus();
+                }, 300);
             },
-            
+
             updateThemeIcon: (isDark) => {
                 document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+                
+                // Tambahkan animasi untuk perubahan tema
+                const icon = document.getElementById('theme-icon');
+                icon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    icon.style.transform = 'scale(1)';
+                }, 300);
             },
-            
+
             updateLayoutIcon: (isMobile) => {
                 document.getElementById('layout-icon').textContent = isMobile ? '🖥️' : '📱';
                 document.getElementById('layout-toggle').title = isMobile ? 
                     "Ubah ke layout desktop" : "Ubah ke layout mobile";
+                    
+                // Tambahkan animasi untuk perubahan layout
+                const icon = document.getElementById('layout-icon');
+                icon.style.transform = 'rotate(180deg)';
+                setTimeout(() => {
+                    icon.style.transform = 'rotate(0deg)';
+                }, 300);
             }
         };
 
@@ -408,38 +821,93 @@
                 // Setup event listeners
                 document.getElementById('theme-toggle').onclick = Controller.toggleTheme;
                 document.getElementById('layout-toggle').onclick = Controller.toggleLayout;
-                
+
                 // Load saved preferences
                 Controller.loadPreferences();
-                
+
                 // Setup routing
                 window.addEventListener('hashchange', Controller.handleRoute);
                 Controller.handleRoute();
-                
+
                 // Tambahkan event listener untuk tombol navigasi (untuk aksesibilitas)
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {
                         document.getElementById('main-content').focus();
                     }
                 });
+                
+                // Tambahkan animasi untuk elemen yang muncul saat scroll
+                Controller.setupScrollAnimations();
             },
             
+            setupScrollAnimations: () => {
+                // Fungsi untuk animasi saat scroll
+                const animateOnScroll = () => {
+                    const elements = document.querySelectorAll('.fade-in-on-scroll');
+                    
+                    elements.forEach(element => {
+                        const elementTop = element.getBoundingClientRect().top;
+                        const elementVisible = 150;
+                        
+                        if (elementTop < window.innerHeight - elementVisible) {
+                            element.classList.add('visible');
+                        }
+                    });
+                };
+                
+                // Jalankan saat scroll
+                window.addEventListener('scroll', animateOnScroll);
+                
+                // Jalankan sekali saat inisialisasi
+                animateOnScroll();
+            },
+            
+            animateContent: () => {
+                // Tambahkan animasi untuk semua elemen konten
+                const contentElements = document.querySelectorAll('h3, p, ul, ol, table, .quote');
+                
+                contentElements.forEach((element, index) => {
+                    // Reset animasi
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    
+                    // Terapkan animasi dengan delay bertahap
+                    setTimeout(() => {
+                        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, 100 + index * 50);
+                });
+            },
+
             handleRoute: () => {
                 const key = location.hash.substring(1) || 'home';
                 View.renderNav(key);
                 View.renderContent(key);
-                
+
                 // Update URL tanpa reload halaman
                 history.replaceState(null, null, `#${key}`);
             },
-            
+
             navigateTo: (key) => {
+                // Tambahkan efek klik pada tombol navigasi
+                const activeBtn = document.querySelector(`[data-key="${key}"]`);
+                if (activeBtn) {
+                    activeBtn.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        activeBtn.style.transform = '';
+                    }, 200);
+                }
+                
                 location.hash = key;
             },
-            
+
             toggleTheme: () => {
                 const body = document.body;
                 const isDark = body.getAttribute('data-theme') === 'dark';
+
+                // Tambahkan animasi transisi tema
+                body.style.transition = 'background-color 0.5s ease, color 0.5s ease';
                 
                 if (isDark) {
                     body.removeAttribute('data-theme');
@@ -448,13 +916,21 @@
                     body.setAttribute('data-theme', 'dark');
                     localStorage.setItem('avo-theme', 'dark');
                 }
-                
+
                 View.updateThemeIcon(!isDark);
+                
+                // Reset transisi setelah selesai
+                setTimeout(() => {
+                    body.style.transition = '';
+                }, 500);
             },
-            
+
             toggleLayout: () => {
                 const body = document.body;
                 const isMobile = body.classList.contains('mobile-mode');
+
+                // Tambahkan animasi transisi layout
+                body.style.transition = 'all 0.5s ease';
                 
                 if (isMobile) {
                     body.classList.remove('mobile-mode');
@@ -463,10 +939,15 @@
                     body.classList.add('mobile-mode');
                     localStorage.setItem('avo-layout', 'mobile');
                 }
-                
+
                 View.updateLayoutIcon(!isMobile);
+                
+                // Reset transisi setelah selesai
+                setTimeout(() => {
+                    body.style.transition = '';
+                }, 500);
             },
-            
+
             loadPreferences: () => {
                 // Load theme preference
                 const savedTheme = localStorage.getItem('avo-theme');
@@ -474,11 +955,11 @@
                     document.body.setAttribute('data-theme', 'dark');
                     View.updateThemeIcon(true);
                 }
-                
+
                 // Load layout preference
                 const savedLayout = localStorage.getItem('avo-layout');
                 const isMobileView = window.innerWidth <= 768;
-                
+
                 // Jika di mobile, default ke mobile mode kecuali pengguna memilih desktop
                 if (savedLayout === 'mobile' || (isMobileView && savedLayout !== 'desktop')) {
                     document.body.classList.add('mobile-mode');
@@ -491,7 +972,7 @@
 
         // Inisialisasi saat halaman dimuat
         document.addEventListener('DOMContentLoaded', Controller.init);
-        
+
         // Responsif terhadap perubahan ukuran jendela
         window.addEventListener('resize', () => {
             // Jika ukuran window berubah ke mobile (<768px) dan tidak ada preferensi tersimpan
