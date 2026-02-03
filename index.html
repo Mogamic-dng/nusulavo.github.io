@@ -3,34 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVO-meter: Makalah Singkat - Novan</title>
+    <title>AVO-meter: Makalah Lengkap - Novan</title>
     <style>
         :root {
-            --primary: #0066ff; /* Biru modern */
+            --primary: #0066ff;
             --primary-dark: #0052d4;
-            --accent: #00d4ff; /* Biru muda untuk aksen */
-            --bg: #ffffff; /* Putih bersih */
-            --panel: #f8fafc; /* Abu-abu sangat muda */
-            --text: #1a1a1a; /* Hampir hitam */
-            --heading: #0a0a0a; /* Hitam pekat */
-            --border: #e5e7eb; /* Abu-abu muda */
+            --accent: #00d4ff;
+            --secondary: #10b981;
+            --bg: #ffffff;
+            --panel: #f8fafc;
+            --text: #1a1a1a;
+            --heading: #0a0a0a;
+            --border: #e5e7eb;
             --shadow: rgba(0, 0, 0, 0.08);
+            --progress-bar: var(--primary);
             --sidebar-w: 260px;
             --mobile-breakpoint: 768px;
         }
         [data-theme="dark"] {
-            --primary: #3b82f6; /* Biru lebih terang untuk mode gelap */
+            --primary: #3b82f6;
             --primary-dark: #60a5fa;
-            --accent: #38bdf8; /* Cyan biru */
-            --bg: #0a0a0a; /* Hitam pekat */
-            --panel: #111111; /* Hitam dengan sedikit cahaya */
-            --text: #f0f0f0; /* Putih dengan sedikit abu */
-            --heading: #ffffff; /* Putih murni */
-            --border: #333333; /* Abu-abu gelap */
+            --accent: #38bdf8;
+            --secondary: #10b981;
+            --bg: #0a0a0a;
+            --panel: #111111;
+            --text: #f0f0f0;
+            --heading: #ffffff;
+            --border: #333333;
             --shadow: rgba(255, 255, 255, 0.05);
+            --progress-bar: linear-gradient(to right, var(--primary), var(--accent));
         }
 
-        /* Mode mobile eksplisit (untuk pengujian) */
+        /* Progress Bar Sticky */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .progress-container.visible {
+            opacity: 1;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--progress-bar);
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Mode mobile eksplisit */
         body.mobile-mode {
             flex-direction: column;
             height: auto;
@@ -61,6 +90,11 @@
             flex-direction: column;
             gap: 10px;
         }
+        
+        /* Adjust untuk progress bar di mobile mode */
+        body.mobile-mode .progress-container {
+            top: 60px;
+        }
 
         * { 
             box-sizing: border-box; 
@@ -76,9 +110,9 @@
             color: var(--text); 
             overflow: hidden;
             line-height: 1.6;
+            padding-top: 4px;
         }
         
-        /* Animasi fade-in untuk body */
         body {
             animation: bodyFadeIn 0.5s ease-out;
         }
@@ -117,7 +151,6 @@
             animation: fadeInDown 0.6s ease-out 0.1s both;
         }
         
-        /* Efek garis bawah animasi untuk judul */
         nav h1::after {
             content: '';
             position: absolute;
@@ -157,7 +190,6 @@
             animation-fill-mode: both;
         }
         
-        /* Animasi stagger untuk nav link */
         .nav-link:nth-child(1) { animation-delay: 0.1s; }
         .nav-link:nth-child(2) { animation-delay: 0.15s; }
         .nav-link:nth-child(3) { animation-delay: 0.2s; }
@@ -169,7 +201,6 @@
             to { transform: translateY(0); opacity: 1; }
         }
         
-        /* Efek hover dengan bayangan dan transformasi */
         .nav-link:hover, .nav-link:focus { 
             background: var(--panel); 
             color: var(--primary); 
@@ -178,7 +209,6 @@
             box-shadow: 0 5px 15px var(--shadow);
         }
         
-        /* Efek garis bawah saat hover */
         .nav-link::after {
             content: '';
             position: absolute;
@@ -219,6 +249,7 @@
             overflow-y: auto; 
             outline: none;
             animation: fadeIn 0.6s ease-out 0.2s both;
+            position: relative; /* Untuk scroll progress */
         }
         
         @keyframes fadeIn {
@@ -255,7 +286,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Efek gradien di belakang judul */
         h2::before {
             content: '';
             position: absolute;
@@ -304,7 +334,6 @@
             animation-fill-mode: both;
         }
         
-        /* Animasi stagger untuk list items */
         li:nth-child(1) { animation-delay: 0.1s; }
         li:nth-child(2) { animation-delay: 0.2s; }
         li:nth-child(3) { animation-delay: 0.3s; }
@@ -381,7 +410,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Efek latar belakang untuk quote */
         .quote::before {
             content: '"';
             position: absolute;
@@ -419,7 +447,6 @@
             overflow: hidden;
         }
         
-        /* Efek ripple untuk tombol */
         .control-btn::after {
             content: '';
             position: absolute;
@@ -439,18 +466,9 @@
         }
         
         @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            20% {
-                transform: scale(25, 25);
-                opacity: 0.3;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(40, 40);
-            }
+            0% { transform: scale(0, 0); opacity: 0.5; }
+            20% { transform: scale(25, 25); opacity: 0.3; }
+            100% { opacity: 0; transform: scale(40, 40); }
         }
         
         .control-btn:hover {
@@ -468,7 +486,6 @@
             box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
         }
         
-        /* Pulse animation untuk tombol aktif */
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(0, 102, 255, 0); }
@@ -479,13 +496,19 @@
             animation: pulse 2s infinite;
         }
 
-        /* Responsif alami (tanpa mode mobile eksplisit) */
+        /* Responsif alami */
         @media (max-width: 768px) {
             body:not(.mobile-mode) {
                 flex-direction: column;
                 height: auto;
                 overflow-y: auto;
+                padding-top: 0;
             }
+            
+            body:not(.mobile-mode) .progress-container {
+                top: 0;
+            }
+            
             body:not(.mobile-mode) nav {
                 width: 100%;
                 position: sticky;
@@ -515,7 +538,6 @@
                 gap: 10px;
             }
 
-            /* Tabel responsif di mobile */
             table {
                 display: block;
                 overflow-x: auto;
@@ -531,12 +553,10 @@
             }
         }
 
-        /* Animasi untuk konten */
         #app {
             animation: fadeIn 0.5s ease-out;
         }
 
-        /* Scrollbar styling modern */
         ::-webkit-scrollbar {
             width: 10px;
             height: 10px;
@@ -554,19 +574,16 @@
             background: linear-gradient(to bottom, var(--primary-dark), var(--primary));
         }
 
-        /* Untuk mode mobile eksplisit - atur tinggi konten */
         body.mobile-mode #main-content {
             max-height: calc(100vh - 70px);
         }
         
-        /* Efek highlight untuk teks penting */
         strong {
             color: var(--primary);
             font-weight: 600;
             position: relative;
         }
         
-        /* Animasi loading untuk konten */
         .content-loading {
             position: relative;
             overflow: hidden;
@@ -588,7 +605,6 @@
             100% { transform: translateX(100%); }
         }
         
-        /* Animasi untuk elemen yang muncul saat scroll */
         .fade-in-on-scroll {
             opacity: 0;
             transform: translateY(20px);
@@ -600,7 +616,6 @@
             transform: translateY(0);
         }
         
-        /* Garis pemisah dengan animasi */
         hr {
             border: 0;
             height: 1px;
@@ -628,9 +643,276 @@
             border-radius: 50%;
             box-shadow: 0 0 10px var(--primary);
         }
+        
+        /* STYLING UNTUK KALKULATOR HUKUM OHM */
+        .calculator-container {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px var(--shadow);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .calculator-title {
+            color: var(--heading);
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .calculator-title::before {
+            content: "⚡";
+            font-size: 1.8rem;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-group label {
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .input-group label span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .input-group input {
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .input-group input::placeholder {
+            color: color-mix(in srgb, var(--text) 50%, transparent);
+        }
+        
+        .calculator-result {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .result-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .result-unit {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .calculator-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .calc-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .calc-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .calc-btn.secondary {
+            background: var(--panel);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+        
+        .calc-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .calc-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .formula-display {
+            background: rgba(0, 102, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .formula-display h4 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.05), rgba(0, 212, 255, 0.05));
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid var(--accent);
+        }
+        
+        .info-box h4 {
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box h4::before {
+            content: "💡";
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted var(--primary);
+            cursor: help;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: var(--panel);
+            color: var(--text);
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .diagram {
+            background: var(--panel);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .diagram-title {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .diagram-box {
+            display: inline-block;
+            padding: 15px;
+            background: var(--bg);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid var(--border);
+            margin: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-buttons {
+                flex-direction: column;
+            }
+            
+            .calc-btn {
+                width: 100%;
+            }
+            
+            .result-value {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Progress Bar Sticky -->
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
     <nav aria-label="Navigasi Utama">
         <h1>AVO-meter</h1>
         <div id="nav-items"></div>
@@ -655,10 +937,22 @@
                 h: "Makalah AVO-meter", 
                 c: `<p>Disusun oleh: <strong>Novan (2026)</strong></p>
                     <div class="quote">
-                        "Makalah ini disusun untuk memberikan gambaran komprehensif mengenai AVO-meter."
+                        "Makalah ini disusun untuk memberikan gambaran komprehensif mengenai AVO-meter, alat ukur listrik serbaguna yang menjadi dasar dalam bidang elektronika dan kelistrikan."
                     </div>
                     <p><strong>Tujuan:</strong> Membekali pemahaman dasar, prinsip kerja, dan perawatan alat ukur listrik AVO-meter.</p>
-                    <p>AVO-meter (Ampere-Volt-Ohm meter) atau multimeter adalah alat ukur listrik yang sangat penting dalam bidang elektronika dan kelistrikan.</p>`
+                    <p>AVO-meter (Ampere-Volt-Ohm meter) atau multimeter adalah alat ukur listrik yang sangat penting dalam bidang elektronika dan kelistrikan.</p>
+                    
+                    <div class="info-box">
+                        <h4>Ruang Lingkup Makalah</h4>
+                        <p>Makalah ini mencakup:</p>
+                        <ul>
+                            <li>Konsep dasar dan prinsip kerja AVO-meter</li>
+                            <li>Perbedaan antara multimeter analog dan digital</li>
+                            <li>Teknik pengukuran yang benar dan aman</li>
+                            <li>Panduan perawatan dan kalibrasi</li>
+                            <li>Penerapan hukum Ohm dalam pengukuran</li>
+                        </ul>
+                    </div>`
             },
             "bab1": { 
                 t: "BAB 1", 
@@ -721,13 +1015,73 @@
                     
                     <p class="quote">Referensi: Langkah-langkah pengukuran berdasarkan panduan praktis hal. 33-40</p>`
             },
+            "kalkulator": { 
+                t: "Kalkulator Ohm", 
+                h: "Kalkulator Hukum Ohm", 
+                c: `<div class="calculator-container">
+                        <h3 class="calculator-title">Kalkulator Hukum Ohm</h3>
+                        <p>Hukum Ohm menyatakan bahwa <strong>V = I × R</strong>, di mana:</p>
+                        <ul>
+                            <li><strong>V</strong> = Tegangan (Volt)</li>
+                            <li><strong>I</strong> = Arus (Ampere)</li>
+                            <li><strong>R</strong> = Hambatan (Ohm)</li>
+                        </ul>
+                        
+                        <div class="formula-display">
+                            <h4>Rumus Hukum Ohm:</h4>
+                            <p style="font-size: 1.2rem; text-align: center;">
+                                <strong>V = I × R</strong> &nbsp; | &nbsp;
+                                <strong>I = V ÷ R</strong> &nbsp; | &nbsp;
+                                <strong>R = V ÷ I</strong>
+                            </p>
+                        </div>
+                        
+                        <div class="calculator-grid" id="calculator-grid">
+                            <div class="input-group">
+                                <label for="voltage">Tegangan (V) <span>Volt</span></label>
+                                <input type="number" id="voltage" placeholder="Masukkan tegangan" step="0.1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="current">Arus (I) <span>Ampere</span></label>
+                                <input type="number" id="current" placeholder="Masukkan arus" step="0.01">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="resistance">Hambatan (R) <span>Ohm</span></label>
+                                <input type="number" id="resistance" placeholder="Masukkan hambatan" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <div class="calculator-buttons">
+                            <button class="calc-btn primary" id="calculate-btn">
+                                <span>⚡</span> Hitung
+                            </button>
+                            <button class="calc-btn secondary" id="reset-btn">
+                                <span>🔄</span> Reset
+                            </button>
+                            <button class="calc-btn secondary" id="example-btn">
+                                <span>📋</span> Contoh
+                            </button>
+                        </div>
+                        
+                        <div class="calculator-result" id="result" style="display: none;">
+                            <div class="result-title">Hasil Perhitungan:</div>
+                            <div class="result-value" id="result-value">0</div>
+                            <div class="result-unit" id="result-unit">Volt</div>
+                            <div id="calculation-detail" style="margin-top: 15px; font-size: 0.9rem;"></div>
+                        </div>
+                        
+                        <div class="info-box" style="margin-top: 30px;">
+                            <h4>Penerapan dalam AVO-meter</h4>
+                            <p>Kalkulator ini membantu memahami hubungan antara tiga besaran yang diukur oleh AVO-meter.</p>
+                        </div>
+                    </div>`
+            },
             "info": { 
-                t: "Info Tambahan", 
-                h: "Kalibrasi & Tabel Perbandingan", 
-                c: `<h3>Kalibrasi dan Zero Check</h3>
-                    <p>Pada mode Ω, tempelkan kedua probe; hasil harus mendekati 0 ohm. Jika tidak, lakukan kalibrasi dengan memutar tombol zero adjust.</p>
-                    
-                    <h3>Tabel Perbandingan AVO-meter Analog vs Digital</h3>
+                t: "Tabel & Referensi", 
+                h: "Tabel Perbandingan & Referensi", 
+                c: `<h3>Tabel Perbandingan AVO-meter Analog vs Digital</h3>
                     <table>
                         <tr><th>Aspek</th><th>Analog</th><th>Digital</th></tr>
                         <tr><td>Pembacaan</td><td>Jarum (mudah melihat tren)</td><td>Angka (presisi tinggi)</td></tr>
@@ -759,7 +1113,6 @@
                     </button>
                 `).join('');
                 
-                // Tambahkan animasi untuk navigasi
                 const navLinks = document.querySelectorAll('.nav-link');
                 navLinks.forEach((link, index) => {
                     link.style.animationDelay = `${0.1 + index * 0.05}s`;
@@ -769,7 +1122,6 @@
             renderContent: (key) => {
                 const page = Model[key] || Model.home;
                 
-                // Tambahkan efek loading singkat
                 const app = document.getElementById('app');
                 app.classList.add('content-loading');
                 
@@ -780,21 +1132,25 @@
                         <div class="content">${page.c}</div>
                     `;
                     
-                    // Hapus class loading setelah konten dimuat
                     app.classList.remove('content-loading');
                     
-                    // Tambahkan animasi untuk elemen baru
+                    if (key === 'kalkulator') {
+                        Controller.initCalculator();
+                    }
+                    
                     Controller.animateContent();
                     
-                    // Set focus ke konten utama untuk aksesibilitas
                     document.getElementById('main-content').focus();
+                    
+                    Controller.resetProgressBar();
+                    
+                    Controller.setupProgressBar();
                 }, 300);
             },
 
             updateThemeIcon: (isDark) => {
                 document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
                 
-                // Tambahkan animasi untuk perubahan tema
                 const icon = document.getElementById('theme-icon');
                 icon.style.transform = 'scale(1.2)';
                 setTimeout(() => {
@@ -807,12 +1163,29 @@
                 document.getElementById('layout-toggle').title = isMobile ? 
                     "Ubah ke layout desktop" : "Ubah ke layout mobile";
                     
-                // Tambahkan animasi untuk perubahan layout
                 const icon = document.getElementById('layout-icon');
                 icon.style.transform = 'rotate(180deg)';
                 setTimeout(() => {
                     icon.style.transform = 'rotate(0deg)';
                 }, 300);
+            },
+            
+            updateProgressBar: (percentage) => {
+                const progressBar = document.getElementById('progress-bar');
+                if (progressBar) {
+                    progressBar.style.width = `${percentage}%`;
+                }
+                
+                const progressContainer = document.getElementById('progress-container');
+                if (percentage > 0 && percentage < 100) {
+                    progressContainer.classList.add('visible');
+                } else if (percentage >= 100) {
+                    setTimeout(() => {
+                        progressContainer.classList.remove('visible');
+                    }, 1000);
+                } else {
+                    progressContainer.classList.remove('visible');
+                }
             }
         };
 
@@ -829,49 +1202,78 @@
                 window.addEventListener('hashchange', Controller.handleRoute);
                 Controller.handleRoute();
 
-                // Tambahkan event listener untuk tombol navigasi (untuk aksesibilitas)
+                // Tambahkan event listener untuk tombol navigasi
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {
                         document.getElementById('main-content').focus();
                     }
                 });
                 
-                // Tambahkan animasi untuk elemen yang muncul saat scroll
-                Controller.setupScrollAnimations();
+                // Tambahkan progress bar ke DOM
+                const progressContainer = document.createElement('div');
+                progressContainer.className = 'progress-container';
+                progressContainer.id = 'progress-container';
+                progressContainer.innerHTML = '<div class="progress-bar" id="progress-bar"></div>';
+                document.body.prepend(progressContainer);
+                
+                // Setup progress bar
+                Controller.setupProgressBar();
             },
             
-            setupScrollAnimations: () => {
-                // Fungsi untuk animasi saat scroll
-                const animateOnScroll = () => {
-                    const elements = document.querySelectorAll('.fade-in-on-scroll');
+            setupProgressBar: () => {
+                // Dapatkan elemen main (scroll container)
+                const mainElement = document.querySelector('main');
+                if (!mainElement) return;
+                
+                // Fungsi untuk menghitung progress scroll
+                const calculateScrollProgress = () => {
+                    const article = document.querySelector('article');
+                    if (!article) return;
                     
-                    elements.forEach(element => {
-                        const elementTop = element.getBoundingClientRect().top;
-                        const elementVisible = 150;
+                    // Dapatkan dimensi
+                    const articleHeight = article.offsetHeight;
+                    const articleTop = article.offsetTop;
+                    const articleBottom = articleTop + articleHeight;
+                    
+                    // Dapatkan scroll position dari main element
+                    const scrollTop = mainElement.scrollTop;
+                    const windowHeight = mainElement.clientHeight;
+                    
+                    // Hitung berapa persen artikel yang sudah terlihat
+                    let progress = 0;
+                    
+                    if (scrollTop >= articleTop) {
+                        const visibleHeight = Math.min(scrollTop + windowHeight, articleBottom) - Math.max(scrollTop, articleTop);
+                        progress = (visibleHeight / articleHeight) * 100;
                         
-                        if (elementTop < window.innerHeight - elementVisible) {
-                            element.classList.add('visible');
-                        }
-                    });
+                        // Pastikan progress antara 0-100
+                        progress = Math.min(100, Math.max(0, progress));
+                    }
+                    
+                    View.updateProgressBar(progress);
                 };
                 
-                // Jalankan saat scroll
-                window.addEventListener('scroll', animateOnScroll);
+                // Event listener untuk scroll pada main element
+                mainElement.addEventListener('scroll', calculateScrollProgress);
                 
-                // Jalankan sekali saat inisialisasi
-                animateOnScroll();
+                // Hitung progress awal
+                setTimeout(calculateScrollProgress, 500);
+                
+                // Simpan reference untuk bisa di-remove jika diperlukan
+                mainElement._scrollProgressHandler = calculateScrollProgress;
+            },
+            
+            resetProgressBar: () => {
+                View.updateProgressBar(0);
             },
             
             animateContent: () => {
-                // Tambahkan animasi untuk semua elemen konten
-                const contentElements = document.querySelectorAll('h3, p, ul, ol, table, .quote');
+                const contentElements = document.querySelectorAll('h3, p, ul, ol, table, .quote, .info-box, .calculator-container, .diagram');
                 
                 contentElements.forEach((element, index) => {
-                    // Reset animasi
                     element.style.opacity = '0';
                     element.style.transform = 'translateY(20px)';
                     
-                    // Terapkan animasi dengan delay bertahap
                     setTimeout(() => {
                         element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                         element.style.opacity = '1';
@@ -890,7 +1292,6 @@
             },
 
             navigateTo: (key) => {
-                // Tambahkan efek klik pada tombol navigasi
                 const activeBtn = document.querySelector(`[data-key="${key}"]`);
                 if (activeBtn) {
                     activeBtn.style.transform = 'scale(0.95)';
@@ -906,7 +1307,6 @@
                 const body = document.body;
                 const isDark = body.getAttribute('data-theme') === 'dark';
 
-                // Tambahkan animasi transisi tema
                 body.style.transition = 'background-color 0.5s ease, color 0.5s ease';
                 
                 if (isDark) {
@@ -919,7 +1319,6 @@
 
                 View.updateThemeIcon(!isDark);
                 
-                // Reset transisi setelah selesai
                 setTimeout(() => {
                     body.style.transition = '';
                 }, 500);
@@ -929,7 +1328,6 @@
                 const body = document.body;
                 const isMobile = body.classList.contains('mobile-mode');
 
-                // Tambahkan animasi transisi layout
                 body.style.transition = 'all 0.5s ease';
                 
                 if (isMobile) {
@@ -942,30 +1340,180 @@
 
                 View.updateLayoutIcon(!isMobile);
                 
-                // Reset transisi setelah selesai
                 setTimeout(() => {
                     body.style.transition = '';
                 }, 500);
             },
 
             loadPreferences: () => {
-                // Load theme preference
                 const savedTheme = localStorage.getItem('avo-theme');
                 if (savedTheme === 'dark') {
                     document.body.setAttribute('data-theme', 'dark');
                     View.updateThemeIcon(true);
                 }
 
-                // Load layout preference
                 const savedLayout = localStorage.getItem('avo-layout');
                 const isMobileView = window.innerWidth <= 768;
 
-                // Jika di mobile, default ke mobile mode kecuali pengguna memilih desktop
                 if (savedLayout === 'mobile' || (isMobileView && savedLayout !== 'desktop')) {
                     document.body.classList.add('mobile-mode');
                     View.updateLayoutIcon(true);
                 } else {
                     View.updateLayoutIcon(false);
+                }
+            },
+            
+            // Fungsi untuk kalkulator Hukum Ohm - DIPERBAIKI
+            initCalculator: () => {
+                const voltageInput = document.getElementById('voltage');
+                const currentInput = document.getElementById('current');
+                const resistanceInput = document.getElementById('resistance');
+                const calculateBtn = document.getElementById('calculate-btn');
+                const resetBtn = document.getElementById('reset-btn');
+                const exampleBtn = document.getElementById('example-btn');
+                const resultDiv = document.getElementById('result');
+                const resultValue = document.getElementById('result-value');
+                const resultUnit = document.getElementById('result-unit');
+                const calculationDetail = document.getElementById('calculation-detail');
+                
+                // Helper function untuk cek apakah input terisi (termasuk angka 0)
+                const isFilled = (input) => {
+                    return input.value !== '' && input.value !== null;
+                };
+                
+                const calculate = () => {
+                    const vStr = voltageInput.value;
+                    const iStr = currentInput.value;
+                    const rStr = resistanceInput.value;
+                    
+                    // Hitung jumlah input yang diisi menggunakan helper function
+                    const filledInputs = [voltageInput, currentInput, resistanceInput].filter(isFilled).length;
+                    
+                    if (filledInputs < 2) {
+                        alert('Masukkan setidaknya 2 nilai untuk menghitung nilai yang ketiga!');
+                        return;
+                    }
+                    
+                    let calculatedValue = 0;
+                    let unit = '';
+                    let detail = '';
+                    
+                    // Logika perhitungan berdasarkan input yang tersedia - DIPERBAIKI
+                    if (isFilled(voltageInput) && isFilled(currentInput) && !isFilled(resistanceInput)) {
+                        // Hitung R jika V dan I diketahui
+                        const V = parseFloat(vStr);
+                        const I = parseFloat(iStr);
+                        calculatedValue = V / I;
+                        unit = 'Ω (Ohm)';
+                        detail = `R = V ÷ I = ${V}V ÷ ${I}A = ${calculatedValue.toFixed(3)}Ω`;
+                    } else if (isFilled(voltageInput) && !isFilled(currentInput) && isFilled(resistanceInput)) {
+                        // Hitung I jika V dan R diketahui
+                        const V = parseFloat(vStr);
+                        const R = parseFloat(rStr);
+                        calculatedValue = V / R;
+                        unit = 'A (Ampere)';
+                        detail = `I = V ÷ R = ${V}V ÷ ${R}Ω = ${calculatedValue.toFixed(3)}A`;
+                    } else if (!isFilled(voltageInput) && isFilled(currentInput) && isFilled(resistanceInput)) {
+                        // Hitung V jika I dan R diketahui
+                        const I = parseFloat(iStr);
+                        const R = parseFloat(rStr);
+                        calculatedValue = I * R;
+                        unit = 'V (Volt)';
+                        detail = `V = I × R = ${I}A × ${R}Ω = ${calculatedValue.toFixed(3)}V`;
+                    } else if (isFilled(voltageInput) && isFilled(currentInput) && isFilled(resistanceInput)) {
+                        // Semua terisi, verifikasi Hukum Ohm
+                        const V = parseFloat(vStr);
+                        const I = parseFloat(iStr);
+                        const R = parseFloat(rStr);
+                        const calculatedR = V / I;
+                        const difference = Math.abs(calculatedR - R);
+                        const percentageDiff = (difference / R) * 100;
+                        
+                        calculatedValue = percentageDiff;
+                        unit = '% error';
+                        detail = `Verifikasi: R dihitung = ${V}V ÷ ${I}A = ${calculatedR.toFixed(3)}Ω<br>`;
+                        detail += `Perbedaan dengan R input: ${difference.toFixed(3)}Ω (${percentageDiff.toFixed(2)}%)<br>`;
+                        
+                        if (percentageDiff < 1) {
+                            detail += `<strong style="color: #10b981;">✓ Konsisten dengan Hukum Ohm</strong>`;
+                        } else if (percentageDiff < 5) {
+                            detail += `<strong style="color: #f59e0b;">⚠ Mendekati Hukum Ohm</strong>`;
+                        } else {
+                            detail += `<strong style="color: #ef4444;">⚠ Tidak konsisten dengan Hukum Ohm</strong>`;
+                        }
+                    }
+                    
+                    // Tampilkan hasil
+                    resultValue.textContent = calculatedValue.toFixed(3);
+                    resultUnit.textContent = unit;
+                    calculationDetail.innerHTML = detail;
+                    
+                    // Animasi untuk hasil
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.opacity = '0';
+                    resultDiv.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        resultDiv.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        resultDiv.style.opacity = '1';
+                        resultDiv.style.transform = 'translateY(0)';
+                    }, 10);
+                };
+                
+                const resetCalculator = () => {
+                    voltageInput.value = '';
+                    currentInput.value = '';
+                    resistanceInput.value = '';
+                    resultDiv.style.display = 'none';
+                    
+                    [voltageInput, currentInput, resistanceInput].forEach(input => {
+                        input.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            input.style.transform = '';
+                        }, 200);
+                    });
+                };
+                
+                const loadExample = () => {
+                    voltageInput.value = '12';
+                    currentInput.value = '0.5';
+                    resistanceInput.value = '';
+                    
+                    [voltageInput, currentInput].forEach(input => {
+                        input.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+                        setTimeout(() => {
+                            input.style.backgroundColor = '';
+                        }, 1000);
+                    });
+                    
+                    setTimeout(calculate, 100);
+                };
+                
+                // Event listeners
+                calculateBtn.addEventListener('click', calculate);
+                resetBtn.addEventListener('click', resetCalculator);
+                exampleBtn.addEventListener('click', loadExample);
+                
+                // Tambahkan event listener untuk enter key
+                [voltageInput, currentInput, resistanceInput].forEach(input => {
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            calculate();
+                        }
+                    });
+                });
+                
+                // Animasi untuk kalkulator saat pertama kali dimuat
+                const calculator = document.querySelector('.calculator-container');
+                if (calculator) {
+                    calculator.style.opacity = '0';
+                    calculator.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        calculator.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        calculator.style.opacity = '1';
+                        calculator.style.transform = 'translateY(0)';
+                    }, 300);
                 }
             }
         };
@@ -975,12 +1523,10 @@
 
         // Responsif terhadap perubahan ukuran jendela
         window.addEventListener('resize', () => {
-            // Jika ukuran window berubah ke mobile (<768px) dan tidak ada preferensi tersimpan
             if (window.innerWidth <= 768 && !localStorage.getItem('avo-layout')) {
                 document.body.classList.add('mobile-mode');
                 View.updateLayoutIcon(true);
             }
-            // Jika kembali ke desktop dan tidak ada preferensi mobile yang disimpan
             else if (window.innerWidth > 768 && localStorage.getItem('avo-layout') !== 'mobile') {
                 document.body.classList.remove('mobile-mode');
                 View.updateLayoutIcon(false);
