@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVO-meter: Makalah Lengkap - Novan</title>
+    <title>AVO-meter: Makalah Lengkap - X TKJ 2</title>
     <style>
         :root {
             --primary: #0066ff;
@@ -110,7 +110,7 @@
             background: var(--bg); 
             color: var(--text); 
             overflow: hidden;
-            line-height: 1.7; /* Meningkatkan line-height untuk keterbacaan */
+            line-height: 1.7;
             padding-top: 4px;
         }
         
@@ -755,6 +755,107 @@
             font-size: 1.1rem;
         }
         
+        /* STYLING UNTUK CREDIT TEAM */
+        .credit-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 12px;
+            padding: 30px;
+            margin: 35px 0;
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+        }
+        
+        .credit-title {
+            color: #8b5cf6;
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .credit-title::before {
+            content: "🏆";
+            font-size: 2rem;
+        }
+        
+        .credit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .credit-card {
+            background: linear-gradient(135deg, var(--panel), color-mix(in srgb, var(--panel) 90%, var(--bg)));
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6, #00d4ff);
+        }
+        
+        .credit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+        }
+        
+        .credit-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--heading);
+            margin-bottom: 5px;
+        }
+        
+        .credit-nis {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .credit-role {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+            font-style: italic;
+        }
+        
+        .team-info {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .team-class {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .team-year {
+            font-size: 1rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+        
         /* STYLING UNTUK KALKULATOR HUKUM OHM */
         .calculator-container {
             background: var(--panel);
@@ -933,6 +1034,14 @@
             .component-list {
                 grid-template-columns: 1fr;
             }
+            
+            .credit-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .credit-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -959,29 +1068,80 @@
     </main>
 
     <script>
-        // DATA MODEL YANG DIPERBARUI
+        // DATA MODEL YANG DIPERBARUI DENGAN CREDIT TIM
         const Model = {
             "home": { 
                 t: "Beranda", 
                 h: "Makalah AVO-meter", 
-                c: `<p>Disusun oleh: <strong>Novan (2026)</strong></p>
-                    <div class="quote">
-                        "Makalah ini disusun untuk memberikan gambaran komprehensif mengenai AVO-meter, alat ukur listrik serbaguna yang menjadi dasar dalam bidang elektronika dan kelistrikan."
+                c: `<div class="content-section">
+                        <p>Makalah ini disusun sebagai tugas akhir mata pelajaran <strong>Pemrograman Web</strong> dan <strong>Praktik Pengukuran Listrik</strong>.</p>
+                        
+                        <div class="quote">
+                            "Teknologi berkembang pesat, tetapi dasar-dasar pengukuran listrik tetap menjadi fondasi yang tak tergantikan dalam dunia elektronika dan jaringan komputer."
+                        </div>
                     </div>
-                    <p><strong>Tujuan:</strong> Membekali pemahaman dasar, prinsip kerja, dan perawatan alat ukur listrik AVO-meter.</p>
-                    <p>AVO-meter (Ampere-Volt-Ohm meter) atau multimeter adalah alat ukur listrik yang sangat penting dalam bidang elektronika dan kelistrikan. Alat ini memungkinkan pengukuran tiga besaran listrik utama: arus (ampere), tegangan (volt), dan hambatan (ohm).</p>
                     
-                    <div class="info-box">
-                        <h4>Ruang Lingkup Makalah</h4>
-                        <p>Makalah ini mencakup:</p>
-                        <ul>
-                            <li>Konsep dasar dan prinsip kerja AVO-meter</li>
-                            <li>Perbedaan antara multimeter analog dan digital</li>
-                            <li>Teknik pengukuran yang benar dan aman</li>
-                            <li>Panduan perawatan dan kalibrasi</li>
-                            <li>Penerapan hukum Ohm dalam pengukuran</li>
-                            <li>Tips praktis untuk penggunaan sehari-hari</li>
-                        </ul>
+                    <div class="content-section">
+                        <h3>Tujuan Pembelajaran</h3>
+                        <p><strong>Tujuan:</strong> Membekali pemahaman dasar, prinsip kerja, dan perawatan alat ukur listrik AVO-meter untuk siswa Teknik Komputer dan Jaringan.</p>
+                        <p>AVO-meter (Ampere-Volt-Ohm meter) atau multimeter adalah alat ukur listrik yang sangat penting dalam bidang elektronika dan kelistrikan. Alat ini memungkinkan pengukuran tiga besaran listrik utama: arus (ampere), tegangan (volt), dan hambatan (ohm).</p>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3>Ruang Lingkup Makalah</h3>
+                        <div class="info-box">
+                            <h4>Materi yang Dibahas</h4>
+                            <ul>
+                                <li>Konsep dasar dan prinsip kerja AVO-meter</li>
+                                <li>Perbedaan antara multimeter analog dan digital</li>
+                                <li>Teknik pengukuran yang benar dan aman</li>
+                                <li>Panduan perawatan dan kalibrasi</li>
+                                <li>Penerapan hukum Ohm dalam pengukuran</li>
+                                <li>Tips praktis untuk penggunaan sehari-hari</li>
+                                <li>Aplikasi dalam troubleshooting jaringan komputer</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="credit-section">
+                        <h3 class="credit-title">Tim Penyusun</h3>
+                        
+                        <div class="credit-grid">
+                            <div class="credit-card">
+                                <div class="credit-name">M Agus Nusul</div>
+                                <div class="credit-nis">Absen: 20</div>
+                                <div class="credit-role">Koordinator Konten & Editor</div>
+                            </div>
+                            
+                            <div class="credit-card">
+                                <div class="credit-name">Tirto Laksono Aji</div>
+                                <div class="credit-nis">Absen: 36</div>
+                                <div class="credit-role">Peneliti & Analisis Data</div>
+                            </div>
+                            
+                            <div class="credit-card">
+                                <div class="credit-name">Tio Novan Pratama</div>
+                                <div class="credit-nis">Absen: 35</div>
+                                <div class="credit-role">Web Developer & Desainer</div>
+                            </div>
+                            
+                            <div class="credit-card">
+                                <div class="credit-name">Nadhif Mahardika</div>
+                                <div class="credit-nis">Absen: 29</div>
+                                <div class="credit-role">Penyusun Materi & Validator</div>
+                            </div>
+                            
+                            <div class="credit-card">
+                                <div class="credit-name">Rezqy Amru</div>
+                                <div class="credit-nis">Absen: 32</div>
+                                <div class="credit-role">Peneliti & Validator</div>
+                            </div>
+                        </div>
+                        
+                        <div class="team-info">
+                            <div class="team-class">X TKJ 1 - Teknik Komputer dan Jaringan</div>
+                            <div class="team-year">SMK Negeri 2 Kota Surabaya • Tahun Ajaran 2025/2026</div>
+                        </div>
                     </div>`
             },
             "bab1": { 
@@ -1421,7 +1581,7 @@
             },
             
             animateContent: () => {
-                const contentElements = document.querySelectorAll('.content-section, h3, h4, p, ul, ol, table, .quote, .highlight-box, .warning-box, .info-box, .calculator-container, .component-list');
+                const contentElements = document.querySelectorAll('.content-section, h3, h4, p, ul, ol, table, .quote, .highlight-box, .warning-box, .info-box, .calculator-container, .component-list, .credit-section');
                 
                 contentElements.forEach((element, index) => {
                     element.style.opacity = '0';
