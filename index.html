@@ -612,7 +612,7 @@
         (function(){
             "use strict";
 
-            // ---------- DATA MODEL (konten sama, hanya styling yg dirombak) ----------
+            // ---------- DATA MODEL (konten diperkaya materi tambahan) ----------
             const Model = {
                 "home": { 
                     t: "BERANDA", 
@@ -628,7 +628,7 @@
                         </div>
                         <div class="content-section">
                             <h3>Ruang Lingkup</h3>
-                            <div class="info-box"><h4>Materi yang Dibahas</h4><ul><li>Konsep dasar dan prinsip kerja</li><li>Analog vs Digital</li><li>Teknik pengukuran aman</li><li>Perawatan & kalibrasi</li><li>Hukum Ohm & troubleshooting</li></ul></div>
+                            <div class="info-box"><h4>Materi yang Dibahas</h4><ul><li>Konsep dasar dan prinsip kerja</li><li>Analog vs Digital</li><li>Teknik pengukuran aman</li><li>Perawatan & kalibrasi</li><li>Hukum Ohm & troubleshooting</li><li>Studi kasus kabel UTP</li></ul></div>
                         </div>
                         <div class="credit-section">
                             <h3 class="credit-title">TIM PENYUSUN</h3>
@@ -643,8 +643,52 @@
                         </div>`
                 },
                 "bab1": { t: "BAB 1", h: "PENDAHULUAN", c: `<div class="content-section"><h3>Latar Belakang</h3><p>Pengukuran besaran listrik adalah keterampilan dasar. AVO-meter menyediakan solusi serbaguna.</p></div><div class="content-section"><h3>Tujuan</h3><ul><li>Menjelaskan prinsip kerja</li><li>Komponen & jenis</li><li>Panduan aman</li><li>Kalibrasi</li></ul></div>` },
-                "bab2": { t: "BAB 2", h: "TEORI & PENGERTIAN", c: `<div class="content-section"><h3>Definisi</h3><p><strong>A (Ampere)</strong> arus, <strong>V (Volt)</strong> tegangan, <strong>O (Ohm)</strong> hambatan.</p></div><div class="component-list"><div class="component-item"><div class="component-title">Papan Skala</div><p>Analog: jarum</p></div><div class="component-item"><div class="component-title">Saklar Pemilih</div><p>Range & mode</p></div><div class="component-item"><div class="component-title">Zero Adjust</div><p>Kalibrasi nol</p></div></div><div class="highlight-box"><h4>Analog vs Digital</h4><p>Analog: tren fluktuatif. Digital: presisi tinggi.</p></div>` },
-                "bab3": { t: "BAB 3", h: "PRAKTIK & KESELAMATAN", c: `<div class="info-box"><h4>Tegangan (Volt)</h4><p>Paralel, range tertinggi dulu.</p></div><div class="warning-box"><h4>Arus (Ampere)</h4><p><strong>SERI!</strong> Jangan paralel → short!</p></div><div class="warning-box"><h4>Hambatan (Ohm)</h4><p>Rangkaian MATI. Kalibrasi zero ohm.</p></div><div class="highlight-box"><h4>Penerapan TKJ</h4><p>Cek PSU, kabel LAN, baterai CMOS.</p></div>` },
+                "bab2": { t: "BAB 2", h: "TEORI & PENGERTIAN", c: `<div class="content-section"><h3>Definisi</h3><p><strong>A (Ampere)</strong> arus, <strong>V (Volt)</strong> tegangan, <strong>O (Ohm)</strong> hambatan.</p></div>
+                <div class="component-list"><div class="component-item"><div class="component-title">Papan Skala</div><p>Analog: jarum</p></div><div class="component-item"><div class="component-title">Saklar Pemilih</div><p>Range & mode</p></div><div class="component-item"><div class="component-title">Zero Adjust</div><p>Kalibrasi nol</p></div></div>
+                <div class="highlight-box"><h4>Analog vs Digital</h4><p>Analog: tren fluktuatif. Digital: presisi tinggi.</p></div>
+                <div class="content-section">
+                    <h3>Memahami Saklar Selektor (Selector Switch)</h3>
+                    <p>Jantung utama dari pengaturan AVO-meter adalah saklar pemilih. Kesalahan memutar saklar ini bisa berakibat fatal (seperti konsleting atau sekering dalam alat putus).</p>
+                    <ul>
+                        <li><strong>DCV (DC Voltage):</strong> Mengukur tegangan searah. Contoh praktik TKJ: Cek tegangan Baterai CMOS (3V), Power Supply PC (12V/5V), dan Adaptor Router.</li>
+                        <li><strong>ACV (AC Voltage):</strong> Mengukur tegangan bolak-balik. Contoh praktik: Mengukur sumber listrik PLN (220V) pada stop kontak atau UPS server.</li>
+                        <li><strong>DCA (DC Ampere):</strong> Mengukur kuat arus searah. Harus dipasang seri dengan beban. Sangat jarang digunakan dalam troubleshooting ringan TKJ.</li>
+                        <li><strong>Ω (Ohm) & Buzzer:</strong> Mengukur nilai hambatan resistor dan kontinuitas jalur. Wajib digunakan teknisi untuk mengecek jalur motherboard atau kabel putus.</li>
+                    </ul>
+                </div>` },
+                "bab3": { t: "BAB 3", h: "PRAKTIK & KESELAMATAN", c: `<div class="info-box"><h4>Tegangan (Volt)</h4><p>Paralel, range tertinggi dulu.</p></div>
+                <div class="warning-box"><h4>Arus (Ampere)</h4><p><strong>SERI!</strong> Jangan paralel → short!</p></div>
+                <div class="warning-box"><h4>Hambatan (Ohm)</h4><p>Rangkaian MATI. Kalibrasi zero ohm.</p></div>
+                <div class="content-section">
+                    <h3>Prosedur Kalibrasi (Zero Ohm Adjustment)</h3>
+                    <p>Sebelum melakukan pengukuran hambatan, AVO-meter analog wajib dikalibrasi agar hasilnya presisi. Berikut langkahnya:</p>
+                    <ol>
+                        <li>Posisikan saklar selektor pada salah satu skala pengali Ohm (Ω), misalnya x1 atau x10.</li>
+                        <li>Tempelkan ujung besi Probe Merah (+) dan Probe Hitam (-) hingga bersentuhan langsung (short-circuit).</li>
+                        <li>Perhatikan jarum. Jika tidak tepat menunjuk angka 0 (di sisi kanan panel), putar kenop Zero Adjust perlahan hingga jarum sejajar dengan garis 0.</li>
+                        <li>Jika jarum tidak bisa mencapai angka 0 meskipun kenop sudah mentok, itu pertanda baterai di dalam AVO-meter sudah lemah.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h3>Rumus Sakti Membaca Skala Analog</h3>
+                    <p>Siswa sering bingung saat membaca jarum tegangan/arus. Gunakan rumus pasti ini:</p>
+                    <div class="quote" style="font-style:normal; text-align:center; font-weight:bold;">Hasil = (Nilai Jarum / Skala Maksimal) × Batas Ukur</div>
+                    <p>Contoh: jarum menunjuk 30 pada skala maksimal 50, batas ukur 10V → (30/50)×10 = 6 Volt.</p>
+                </div>
+                <div class="highlight-box"><h4>Penerapan AVO-meter di Bidang TKJ</h4><p>Cek PSU, kabel LAN, baterai CMOS.</p></div>
+                <div class="content-section">
+                    <h3>Studi Kasus TKJ: Pengecekan Kabel UTP (LAN)</h3>
+                    <p>Dalam dunia jaringan, selain menggunakan LAN Tester, AVO-meter sangat ampuh untuk mendeteksi kabel tembaga yang putus di tengah jalan menggunakan mode Kontinuitas (Buzzer).</p>
+                    <div class="info-box">
+                        <h4>Langkah Troubleshooting Kabel</h4>
+                        <ol>
+                            <li>Putar saklar selektor ke mode Buzzer (simbol gelombang suara) atau Ohm x1.</li>
+                            <li>Sentuhkan probe merah ke Pin 1 (misal: Putih-Oranye) di ujung kabel A, dan probe hitam ke Pin 1 di ujung kabel B.</li>
+                            <li>Jika alat berbunyi "Beeeep" (atau jarum ke angka 0 Ohm), berarti tembaga di dalam kabel terhubung sempurna.</li>
+                            <li>Jika hening dan jarum tidak bergerak (mendekati Infinity / ∞), berarti urat kabel tersebut putus dan konektor RJ-45 harus di-crimping ulang.</li>
+                        </ol>
+                    </div>
+                </div>` },
                 "kalkulator": { t: "KALKULATOR", h: "HUKUM OHM", c: `<div class="calculator-container"><h3 class="calculator-title">Kalkulator Hukum Ohm</h3><p>V = I × R</p><div class="formula-display"><strong>V = I·R &nbsp;|&nbsp; I = V/R &nbsp;|&nbsp; R = V/I</strong></div><div class="calculator-grid" id="calculator-grid"><div class="input-group"><label>Tegangan (V)</label><input type="number" id="voltage" placeholder="Volt" step="0.1"></div><div class="input-group"><label>Arus (I)</label><input type="number" id="current" placeholder="Ampere" step="0.01"></div><div class="input-group"><label>Hambatan (R)</label><input type="number" id="resistance" placeholder="Ohm" step="0.1"></div></div><div class="calculator-buttons"><button class="calc-btn primary" id="calculate-btn">HITUNG</button><button class="calc-btn secondary" id="reset-btn">RESET</button><button class="calc-btn secondary" id="example-btn">CONTOH</button></div><div class="calculator-result" id="result" style="display:none;"><div class="result-value" id="result-value">0</div><div class="result-unit" id="result-unit"></div><div id="calculation-detail" style="margin-top:12px;"></div></div></div>` },
                 "info": { t: "TABEL", h: "REFERENSI", c: `<h3>Perbandingan</h3><table><tr><th>Aspek</th><th>Analog</th><th>Digital</th></tr><tr><td>Pembacaan</td><td>Jarum</td><td>LCD</td></tr><tr><td>Akurasi</td><td>±2-3%</td><td>±0.5%</td></tr></table><div class="component-list"><div class="component-item"><div class="component-title">Penyimpanan</div><p>Kering, lepas baterai</p></div></div>` }
             };
@@ -687,7 +731,6 @@
                     window.addEventListener('hashchange', () => this.handleRoute());
                     this.handleRoute();
                     this.setupProgressBar();
-                    // binding navigasi
                     document.getElementById('nav-items').addEventListener('click', (e) => {
                         const btn = e.target.closest('.nav-link');
                         if(btn && btn.dataset.key) this.navigateTo(btn.dataset.key);
@@ -737,7 +780,6 @@
                 },
                 resetProgressBar() { View.updateProgressBar(0); },
                 
-                // kalkulator (tanpa emoji)
                 initCalculator() {
                     const v = document.getElementById('voltage');
                     const i = document.getElementById('current');
