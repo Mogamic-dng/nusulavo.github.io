@@ -3,839 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVO-meter · X TKJ 1</title>
-    <!-- Font: tajam & tegas -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <title>MCC - Mogam Cloud Computing</title>
     <style>
-        /* ===== JUJUTSU KAISEN · DARK & EDGY ===== */
-        * {
+        /* Desain Dasar */
+        :root {
+            --primary-color: #0A1128; /* Biru Malam / Angkasa */
+            --secondary-color: #1C305C; /* Biru Awan */
+            --accent-color: #F9D423; /* Cahaya Bintang / Energi */
+            --text-light: #F4F4F9;
+            --text-dark: #333333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #FAFAFA;
         }
 
-        :root {
-            --bg-void: #030303;
-            --bg-panel: #0f0f0f;
-            --bg-elevated: #18181b;
-            --border-dim: #2a2a2e;
-            --crimson: #c41e3a;      /* darah utama */
-            --crimson-glow: #e11d48;
-            --crimson-dark: #9f1239;
-            --text-primary: #ededed;
-            --text-dim: #a1a1aa;
-            --shadow-crimson: 0 0 12px rgba(196, 30, 58, 0.4);
-            --sidebar-w: 270px;
-            --mobile-breakpoint: 768px;
-            --transition-snap: 0.18s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-void);
-            background-image: radial-gradient(circle at 30% 10%, #1f0a0c 0%, #030303 90%);
-            color: var(--text-primary);
+        /* Navigasi / Header */
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 15px 5%;
             display: flex;
-            height: 100vh;
-            overflow: hidden;
-            line-height: 1.65;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ----- PROGRESS BAR (CURSE ENERGY) ----- */
-        .progress-container {
-            position: fixed;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: transparent;
             z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-        }
-        .progress-container.visible {
-            opacity: 1;
-        }
-        .progress-bar {
-            height: 100%;
-            background: var(--crimson);
-            box-shadow: 0 0 10px var(--crimson-glow);
-            width: 0%;
-            transition: width 0.2s ease-out;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* ----- SIDEBAR (DOMAIN EXPANSION PANEL) ----- */
-        nav {
-            width: var(--sidebar-w);
-            background: var(--bg-panel);
-            border-right: 1px solid #1f1f23;
-            display: flex;
-            flex-direction: column;
-            padding: 28px 16px;
-            flex-shrink: 0;
-            overflow-y: auto;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(2px);
-        }
-
-        nav h1 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
             letter-spacing: 2px;
-            color: #fff;
-            margin-bottom: 28px;
-            padding-bottom: 16px;
-            border-bottom: 3px solid var(--crimson);
-            text-transform: uppercase;
-            text-shadow: 0 0 6px rgba(220, 38, 38, 0.4);
-            word-break: break-word;
-        }
-
-        .nav-link {
-            background: transparent;
-            border: 1.5px solid #2c2c30;
-            text-align: left;
-            padding: 14px 16px;
-            cursor: pointer;
-            color: var(--text-dim);
-            font-weight: 600;
-            font-family: 'Oswald', sans-serif;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            border-radius: 0px;      /* tajam */
-            width: 100%;
-            margin-bottom: 10px;
-            font-size: 1rem;
-            transition: all var(--transition-snap);
-            position: relative;
-            background: #0c0c0e;
-            box-shadow: inset 0 0 0 0 var(--crimson);
-        }
-
-        .nav-link:hover {
-            color: #ffffff;
-            border-color: var(--crimson);
-            background: #1a1214;
-            box-shadow: inset 0 0 0 1px var(--crimson), 0 4px 10px rgba(196, 30, 58, 0.15);
-            transform: translateX(3px);
-        }
-
-        .nav-link.active {
-            background: var(--crimson);
-            color: white;
-            border-color: var(--crimson);
-            box-shadow: var(--shadow-crimson);
-            font-weight: 700;
-            transform: scale(1.02) translateX(2px);
-        }
-
-        .nav-link:focus-visible {
-            outline: 2px solid var(--crimson-glow);
-            outline-offset: 2px;
-        }
-
-        /* controls (layout toggle) */
-        .controls {
-            margin-top: auto;
-            padding-top: 24px;
-            border-top: 1px dashed #2e2e32;
-        }
-        .control-btn {
-            padding: 12px 16px;
-            cursor: pointer;
-            background: #0e0e10;
-            border: 1.5px solid #3a3a40;
-            color: var(--text-dim);
-            border-radius: 0px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            width: 100%;
-            transition: all var(--transition-snap);
-            margin-top: 8px;
         }
-        .control-btn:hover {
-            border-color: var(--crimson);
-            color: var(--crimson-glow);
-            background: #1a1216;
-            box-shadow: 0 0 8px rgba(196, 30, 58, 0.3);
-        }
-        .control-btn .icon-symbol {
-            font-size: 1.3rem;
-            line-height: 1;
+
+        .logo span {
+            font-size: 1rem;
             font-weight: 400;
+            margin-left: 10px;
+            color: var(--accent-color);
         }
 
-        /* ----- MAIN CONTENT (CURSED SCROLL) ----- */
-        main {
-            flex: 1;
-            padding: 32px 40px;
-            overflow-y: auto;
-            outline: none;
-            scroll-behavior: smooth;
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.95rem;
+            transition: color 0.3s;
         }
 
-        article {
-            max-width: 880px;
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section (Konsep Bintang & Masa Depan) */
+        .hero {
+            background: radial-gradient(circle at top right, var(--secondary-color) 0%, var(--primary-color) 80%);
+            color: var(--text-light);
+            text-align: center;
+            padding: 120px 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px rgba(249, 212, 35, 0.4);
+        }
+
+        .hero h2 {
+            font-weight: 300;
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        /* Tata Letak Konten */
+        section {
+            padding: 80px 5%;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* tipografi edgy */
-        h2 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            border-left: 8px solid var(--crimson);
-            padding-left: 22px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-        }
-
-        h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 2em 0 0.8em;
-            color: #f0f0f0;
-            border-bottom: 2px solid #3a1e24;
-            padding-bottom: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        h4 {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 500;
-            font-size: 1.3rem;
-            margin: 1.8em 0 0.8em;
-            color: #ddd;
-        }
-
-        p, li {
-            color: var(--text-primary);
-        }
-
-        strong {
-            color: var(--crimson-glow);
-            font-weight: 700;
-        }
-
-        hr {
-            border: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--crimson), #550e1a, transparent);
-            margin: 30px 0 40px;
-        }
-
-        /* ----- BOX STYLES (SHADOW STYLE: BORDER KIRI MERAH) ----- */
-        .info-box, .warning-box, .highlight-box {
-            background: #0d0d0f;
-            border-left: 6px solid;
-            padding: 22px 24px;
-            margin: 28px 0;
-            border-radius: 0 6px 6px 0;
-            box-shadow: 0 8px 12px rgba(0,0,0,0.6);
-            border-right: 1px solid #262629;
-            border-top: 1px solid #1e1e21;
-            border-bottom: 1px solid #1e1e21;
-        }
-        .info-box {
-            border-left-color: var(--crimson);
-        }
-        .warning-box {
-            border-left-color: #b91c1c;
-            background: #120a0c;
-        }
-        .highlight-box {
-            border-left-color: #9d174d;
-        }
-        .info-box h4, .warning-box h4, .highlight-box h4 {
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #fff;
-        }
-
-        /* pengganti emoji dengan simbol tajam */
-        .info-box h4::before {
-            content: "◈";
-            color: var(--crimson);
-            font-size: 1.6rem;
-            font-weight: 300;
-        }
-        .warning-box h4::before {
-            content: "⚠";
-            color: #ef4444;
-            font-size: 1.6rem;
-            font-weight: bold;
-        }
-        .highlight-box h4::before {
-            content: "⬟";
-            color: #e11d48;
-            font-size: 1.6rem;
-        }
-
-        /* quote */
-        .quote {
-            background: #0c0a0b;
-            border-left: 6px solid var(--crimson);
-            padding: 28px 30px;
-            font-style: italic;
-            margin: 30px 0;
-            box-shadow: inset 0 0 15px #00000055, 0 6px 10px #00000080;
-            font-size: 1.1rem;
-            border-radius: 0 8px 8px 0;
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 50px;
             position: relative;
         }
-        .quote::before {
-            content: "“";
-            font-size: 5rem;
-            color: var(--crimson);
-            opacity: 0.25;
-            position: absolute;
-            left: 10px;
-            top: -10px;
-            font-family: serif;
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            display: block;
+            margin: 10px auto 0;
+            border-radius: 2px;
         }
 
-        /* component list */
-        .component-list {
+        /* Grid Services & Keunggulan */
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 18px;
-            margin: 25px 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
-        .component-item {
-            background: #131316;
-            padding: 20px;
-            border: 1px solid #2e2e34;
-            transition: all 0.15s;
-            border-radius: 0;
+
+        .card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-bottom: 5px solid transparent;
+            transition: all 0.3s ease;
         }
-        .component-item:hover {
-            border-color: var(--crimson);
-            background: #19191e;
-            box-shadow: 0 6px 0 #0a0a0c;
-            transform: translateY(-2px);
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-bottom: 5px solid var(--accent-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .component-title {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 600;
-            color: var(--crimson-glow);
-            margin-bottom: 10px;
+
+        .card h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Portofolio Linimasa */
+        .portfolio-item {
+            background: white;
+            padding: 25px;
+            border-left: 5px solid var(--secondary-color);
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .portfolio-item h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
             font-size: 1.2rem;
         }
 
-        /* tabel */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
-            background: #0b0b0e;
-            box-shadow: 0 10px 18px #00000080;
-            border: 1px solid #2a2a2e;
-        }
-        th {
-            background: #1c0f12;
-            color: #fff;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 500;
-            padding: 16px 18px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 3px solid var(--crimson);
-        }
-        td {
-            padding: 14px 18px;
-            border-bottom: 1px solid #29292e;
-            color: #ddd;
-        }
-        tr:hover td {
-            background: #1a1216;
+        .portfolio-item .year {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
-        /* ----- CREDIT SECTION (JUJUTSU TEAM) ----- */
-        .credit-section {
-            background: #0f0b0c;
-            border: 2px solid #2c1a1f;
-            padding: 30px 25px;
-            margin: 40px 0;
-            box-shadow: 0 0 0 1px #3a1e24 inset, 0 12px 20px #000000b0;
-        }
-        .credit-title {
-            font-family: 'Oswald', sans-serif;
-            color: #fff;
-            font-size: 2.2rem;
-            margin-bottom: 30px;
+        /* Bagian Tentang & Visi Misi */
+        .about-flex {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            text-transform: uppercase;
-        }
-        .credit-title::before {
-            content: "⬩⬩";
-            color: var(--crimson);
-            letter-spacing: 8px;
-            font-size: 2rem;
-        }
-        .credit-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 22px;
-        }
-        .credit-card {
-            background: #0d0d10;
-            border: 1.5px solid #2f2f35;
-            padding: 22px 18px;
-            transition: 0.15s;
-            position: relative;
-        }
-        .credit-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--crimson);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.25s;
-        }
-        .credit-card:hover {
-            border-color: var(--crimson);
-            background: #141116;
-        }
-        .credit-card:hover::before {
-            transform: scaleX(1);
-        }
-        .credit-name {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #fff;
-        }
-        .credit-nis {
-            color: var(--crimson);
-            font-weight: 600;
-            margin: 6px 0 10px;
-        }
-
-        /* ----- KALKULATOR OHM (DOMAIN CALC) ----- */
-        .calculator-container {
-            background: #0c0c0f;
-            border: 1px solid #2d1c20;
-            padding: 30px;
-            margin: 40px 0;
-            box-shadow: 0 0 0 1px #1f1216, 0 18px 30px -8px black;
-        }
-        .calculator-title {
-            font-family: 'Oswald', sans-serif;
-            color: white;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .calculator-title::before {
-            content: "⎔";
-            color: var(--crimson);
-            font-size: 2.2rem;
-        }
-        .formula-display {
-            background: #151518;
-            padding: 18px 20px;
-            border-left: 6px solid var(--crimson);
-            margin: 25px 0;
-            font-family: monospace;
-            font-size: 1.1rem;
-        }
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-        }
-        .input-group label {
-            font-weight: 600;
-            color: #ccc;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: #1b1b1f;
-            border: 1.5px solid #3e3e44;
-            color: white;
-            font-size: 1rem;
-            border-radius: 0;
-            transition: 0.15s;
-        }
-        .input-group input:focus {
-            border-color: var(--crimson);
-            outline: none;
-            box-shadow: 0 0 10px #c41e3a55;
-        }
-        .calculator-buttons {
-            display: flex;
-            gap: 18px;
-            margin: 28px 0 15px;
             flex-wrap: wrap;
+            gap: 40px;
         }
-        .calc-btn {
-            background: transparent;
-            border: 2px solid #4a252b;
-            color: #e0e0e0;
-            padding: 14px 28px;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: all 0.15s;
-            flex: 1 0 140px;
-            background: #0e0e12;
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
         }
-        .calc-btn.primary {
-            border-color: var(--crimson);
-            color: var(--crimson-glow);
+
+        /* Footer & Kontak */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 60px 5% 20px;
         }
-        .calc-btn:hover {
-            background: var(--crimson);
-            border-color: var(--crimson);
-            color: black;
-            font-weight: 700;
-            box-shadow: 0 0 18px var(--crimson);
-            transform: scale(1.02);
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
         }
-        .calculator-result {
-            background: #1c1114;
-            padding: 28px;
-            margin-top: 25px;
+
+        .footer-col h3 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .footer-col p, .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
             text-align: center;
-            border: 1px solid var(--crimson);
-        }
-        .result-value {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: white;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
         }
 
-        /* mobile mode */
-        body.mobile-mode {
-            flex-direction: column;
-            height: auto;
-            overflow-y: auto;
-        }
-        body.mobile-mode nav {
-            width: 100%;
-            position: sticky;
-            top: 0;
-            flex-direction: row;
-            overflow-x: auto;
-            padding: 12px;
-            z-index: 50;
-            border-right: none;
-            border-bottom: 2px solid var(--crimson);
-        }
-        body.mobile-mode nav h1 {
-            display: none;
-        }
-        body.mobile-mode .nav-link {
-            width: auto;
-            white-space: nowrap;
-            margin-right: 10px;
-            margin-bottom: 0;
-        }
-        body.mobile-mode .controls {
-            margin: 0 0 0 auto;
-            border: none;
-            padding: 0;
-            display: flex;
-        }
-        body.mobile-mode .control-btn {
-            width: auto;
-            margin: 0 0 0 8px;
-        }
-        body.mobile-mode main {
-            padding: 24px 18px;
-        }
-
-        /* scrollbar gelap */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #0b0b0e; }
-        ::-webkit-scrollbar-thumb { background: #3f1e24; border-radius: 0; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
-
-        /* hapus animasi lambat */
-        @media (max-width: 600px) {
-            .calculator-grid { grid-template-columns: 1fr; }
+        /* Responsif untuk Layar Kecil */
+        @media (max-width: 768px) {
+            header { flex-direction: column; text-align: center; }
+            nav { margin-top: 15px; }
+            nav a { margin: 0 10px; }
+            .hero h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
-    <div class="progress-container" id="progress-container">
-        <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- Header & Navigasi -->
+    <header>
+        <div class="logo">MCC <span>Mogam Cloud Computing</span></div>
+        <nav>
+            <a href="#tentang">Tentang Kami</a>
+            <a href="#layanan">Layanan</a>
+            <a href="#portofolio">Portofolio</a>
+            <a href="#keunggulan">Keunggulan</a>
+            <a href="#kontak">Kontak</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h2>Visi Kami</h2>
+        <h1>Millennium of Data Center and Computing</h1>
+        <p>Terinspirasi dari konsep sebuah bintang; kami adalah simbolisasi dari skala, umur panjang, stabilitas, energi, dan masa depan untuk ekosistem digital Anda.</p>
     </div>
 
-    <nav aria-label="Navigasi Utama">
-        <h1>AVO·METER</h1>
-        <div id="nav-items"></div>
-        <div class="controls">
-            <button id="layout-toggle" class="control-btn" title="Ganti layout">
-                <span class="icon-symbol" id="layout-icon">◫</span> LAYOUT
-            </button>
+    <!-- Profil Perusahaan & Visi Misi -->
+    <section id="tentang">
+        <h2 class="section-title">Profil Perusahaan</h2>
+        <div class="about-flex">
+            <div class="about-text">
+                <h3>Sejarah Singkat</h3>
+                <p>MCC (Mogam Cloud Computing) adalah perusahaan teknologi informasi inovatif yang bergerak di bidang penyediaan infrastruktur digital. Sebagai anak perusahaan resmi dari <strong>Mogam Industries</strong>, MCC didirikan dengan komitmen penuh untuk memajukan ekosistem teknologi modern. Kami hadir untuk menjawab tantangan era digital dengan menyediakan layanan data center berstandar tinggi, solusi cloud computing, dan manajemen database cloud yang aman, andal, dan terukur untuk berbagai skala bisnis.</p>
+            </div>
+            <div class="about-text">
+                <h3>Misi Kami</h3>
+                <ul>
+                    <li>Menyediakan layanan sewa infrastruktur Data Center yang aman, berkinerja tinggi, dan memiliki uptime maksimal.</li>
+                    <li>Menghadirkan solusi Cloud Computing dan Cloud Services Database yang fleksibel untuk mendukung efisiensi operasional klien.</li>
+                    <li>Memberikan dukungan teknis yang proaktif dan profesional untuk memastikan kelancaran bisnis mitra kami.</li>
+                    <li>Menjaga kerahasiaan dan keamanan data klien melalui penerapan teknologi mutakhir.</li>
+                </ul>
+            </div>
         </div>
-    </nav>
+    </section>
 
-    <main id="main-content" role="main" tabindex="-1">
-        <article id="app"></article>
-    </main>
+    <!-- Produk dan Layanan -->
+    <section id="layanan" style="background-color: #F4F4F9;">
+        <h2 class="section-title">Produk dan Layanan</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3>Sewa Data Center (Colocation)</h3>
+                <p>Penyediaan ruang rak server khusus dengan fasilitas pendingin presisi, catu daya cadangan, dan keamanan fisik 24/7.</p>
+            </div>
+            <div class="card">
+                <h3>Layanan Cloud Computing</h3>
+                <p>Layanan komputasi awan publik dan privat (IaaS/PaaS) yang dapat disesuaikan dengan kebutuhan komputasi perusahaan.</p>
+            </div>
+            <div class="card">
+                <h3>Cloud Services Database</h3>
+                <p>Layanan hosting dan manajemen database terkelola di lingkungan cloud yang aman dan mudah diakses (DBaaS).</p>
+            </div>
+            <div class="card">
+                <h3>Backup & Disaster Recovery</h3>
+                <p>Layanan pencadangan data otomatis dan pemulihan bencana untuk memastikan kelangsungan bisnis saat terjadi masalah sistem.</p>
+            </div>
+            <div class="card">
+                <h3>IT Support & Maintenance</h3>
+                <p>Dukungan teknis dan pemeliharaan rutin untuk infrastruktur server dan jaringan milik klien.</p>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        (function(){
-            "use strict";
+    <!-- Portofolio -->
+    <section id="portofolio">
+        <h2 class="section-title">Portofolio Klien</h2>
+        <p style="text-align: center; margin-bottom: 40px;">Sejak didirikan, MCC telah dipercaya oleh berbagai institusi besar untuk menangani infrastruktur digital mereka.</p>
+        
+        <div class="portfolio-item">
+            <span class="year">2023</span>
+            <h4>Migrasi Cloud Database Nasional (PT Finansia Nusantara)</h4>
+            <p>Proyek pemindahan lebih dari 500TB data sensitif nasabah dari server fisik tradisional ke ekosistem komputasi awan privat MCC. Proses migrasi dilakukan dengan tingkat keberhasilan 100% tanpa adanya downtime.</p>
+        </div>
+        
+        <div class="portfolio-item">
+            <span class="year">2024</span>
+            <h4>Penyediaan Infrastruktur Data Center (Bank Mega Utama)</h4>
+            <p>Merancang dan membangun fasilitas colocation server terdedikasi dengan standar keamanan fasilitas Tier-3. Mencakup instalasi sistem pendingin presisi dan catu daya cadangan (UPS).</p>
+        </div>
 
-            // ---------- DATA MODEL (KONTEN DENGAN BAB3 DIPERBAIKI) ----------
-            const Model = {
-                "home": { 
-                    t: "BERANDA", 
-                    h: "MAKALAH AVO-METER", 
-                    c: `<div class="content-section">
-                            <p>Makalah ini disusun sebagai tugas akhir mata pelajaran <strong>Pemrograman Web</strong> dan <strong>Praktik Pengukuran Listrik</strong>.</p>
-                            <div class="quote">"Teknologi berkembang pesat, tetapi dasar-dasar pengukuran listrik tetap menjadi fondasi yang tak tergantikan dalam dunia elektronika dan jaringan komputer."</div>
-                        </div>
-                        <div class="content-section">
-                            <h3>Tujuan Pembelajaran</h3>
-                            <p><strong>Tujuan:</strong> Membekali pemahaman dasar, prinsip kerja, dan perawatan alat ukur listrik AVO-meter untuk siswa Teknik Komputer dan Jaringan.</p>
-                            <p>AVO-meter (Ampere-Volt-Ohm meter) atau multimeter adalah alat ukur listrik yang sangat penting dalam bidang elektronika dan kelistrikan.</p>
-                        </div>
-                        <div class="content-section">
-                            <h3>Ruang Lingkup</h3>
-                            <div class="info-box"><h4>Materi yang Dibahas</h4><ul><li>Konsep dasar dan prinsip kerja</li><li>Analog vs Digital</li><li>Teknik pengukuran aman</li><li>Perawatan & kalibrasi</li><li>Hukum Ohm & troubleshooting</li><li>Studi kasus kabel UTP</li></ul></div>
-                        </div>
-                        <div class="credit-section">
-                            <h3 class="credit-title">TIM PENYUSUN</h3>
-                            <div class="credit-grid">
-                                <div class="credit-card"><div class="credit-name">M Agus Nusul</div><div class="credit-nis">Absen: 20</div><div class="credit-role">Koordinator Konten</div></div>
-                                <div class="credit-card"><div class="credit-name">Tirto Laksono Aji</div><div class="credit-nis">Absen: 36</div><div class="credit-role">Peneliti & Analis</div></div>
-                                <div class="credit-card"><div class="credit-name">Tio Novan Pratama</div><div class="credit-nis">Absen: 35</div><div class="credit-role">Web Developer</div></div>
-                                <div class="credit-card"><div class="credit-name">Nadhif Mahardika</div><div class="credit-nis">Absen: 29</div><div class="credit-role">Penyusun Materi</div></div>
-                                <div class="credit-card"><div class="credit-name">Rezqy Amru</div><div class="credit-nis">Absen: 32</div><div class="credit-role">Validator</div></div>
-                            </div>
-                            <div class="team-info"><div class="team-class">X TKJ 1 · SMK Negeri 2 Surabaya</div><div class="team-year">2025/2026</div></div>
-                        </div>`
-                },
-                "bab1": { t: "BAB 1", h: "PENDAHULUAN", c: `<div class="content-section"><h3>Latar Belakang</h3><p>Pengukuran besaran listrik adalah keterampilan dasar. AVO-meter menyediakan solusi serbaguna.</p></div><div class="content-section"><h3>Tujuan</h3><ul><li>Menjelaskan prinsip kerja</li><li>Komponen & jenis</li><li>Panduan aman</li><li>Kalibrasi</li></ul></div>` },
-                "bab2": { t: "BAB 2", h: "TEORI & PENGERTIAN", c: `<div class="content-section"><h3>Definisi</h3><p><strong>A (Ampere)</strong> arus, <strong>V (Volt)</strong> tegangan, <strong>O (Ohm)</strong> hambatan.</p></div>
-                <div class="component-list"><div class="component-item"><div class="component-title">Papan Skala</div><p>Analog: jarum</p></div><div class="component-item"><div class="component-title">Saklar Pemilih</div><p>Range & mode</p></div><div class="component-item"><div class="component-title">Zero Adjust</div><p>Kalibrasi nol</p></div></div>
-                <div class="highlight-box"><h4>Analog vs Digital</h4><p>Analog: tren fluktuatif. Digital: presisi tinggi.</p></div>
-                <div class="content-section">
-                    <h3>Memahami Saklar Selektor (Selector Switch)</h3>
-                    <p>Jantung utama dari pengaturan AVO-meter adalah saklar pemilih. Kesalahan memutar saklar ini bisa berakibat fatal (seperti konsleting atau sekering dalam alat putus).</p>
-                    <ul>
-                        <li><strong>DCV (DC Voltage):</strong> Mengukur tegangan searah. Contoh praktik TKJ: Cek tegangan Baterai CMOS (3V), Power Supply PC (12V/5V), dan Adaptor Router.</li>
-                        <li><strong>ACV (AC Voltage):</strong> Mengukur tegangan bolak-balik. Contoh praktik: Mengukur sumber listrik PLN (220V) pada stop kontak atau UPS server.</li>
-                        <li><strong>DCA (DC Ampere):</strong> Mengukur kuat arus searah. Harus dipasang seri dengan beban. Sangat jarang digunakan dalam troubleshooting ringan TKJ.</li>
-                        <li><strong>Ω (Ohm) & Buzzer:</strong> Mengukur nilai hambatan resistor dan kontinuitas jalur. Wajib digunakan teknisi untuk mengecek jalur motherboard atau kabel putus.</li>
-                    </ul>
-                </div>` },
-                "bab3": { 
-                    t: "BAB 3", 
-                    h: "PRAKTIK & KESELAMATAN", 
-                    c: `<div class="info-box"><h4>Tegangan (Volt)</h4><p>Paralel, range tertinggi dulu.</p></div>
-                    <div class="warning-box"><h4>Arus (Ampere)</h4><p><strong>SERI!</strong> Jangan paralel → short!</p></div>
-                    <div class="warning-box"><h4>Hambatan (Ohm)</h4><p>Rangkaian MATI. Kalibrasi zero ohm.</p></div>
-                    
-                    <div class="content-section">
-                        <h3>Prosedur Kalibrasi (Zero Ohm Adjustment)</h3>
-                        <div class="info-box" style="border-left-color: var(--crimson); background: #0f0b0e;">
-                            <p style="margin-bottom: 16px;">Sebelum melakukan pengukuran hambatan, AVO-meter analog wajib dikalibrasi agar hasilnya presisi:</p>
-                            <ol style="margin-left: 1.5rem; list-style-type: decimal; color: #ddd;">
-                                <li style="margin-bottom: 12px;"><strong>Pilih skala Ohm (Ω)</strong> — misalnya x1 atau x10.</li>
-                                <li style="margin-bottom: 12px;"><strong>Tempelkan probe Merah & Hitam</strong> hingga bersentuhan langsung (short-circuit).</li>
-                                <li style="margin-bottom: 12px;"><strong>Perhatikan jarum.</strong> Jika belum tepat di angka 0 (sisi kanan), putar kenop <em>Zero Adjust</em> perlahan hingga sejajar.</li>
-                                <li style="margin-bottom: 4px;"><strong>Jika jarum tidak bisa mencapai 0</strong> meskipun kenop mentok → baterai internal lemah, ganti baterai.</li>
-                            </ol>
-                        </div>
-                    </div>
-                    
-                    <div class="content-section">
-                        <h3>Rumus Sakti Skala Analog</h3>
-                        <div class="quote" style="font-style:normal; text-align:center; font-weight:bold; padding: 20px;">
-                            Hasil = (Nilai Jarum / Skala Maksimal) × Batas Ukur
-                        </div>
-                        <p>Contoh: jarum menunjuk 30 pada skala maksimal 50, batas ukur 10V → (30/50)×10 = 6 Volt.</p>
-                    </div>
-                    
-                    <div class="highlight-box"><h4>Penerapan AVO-meter di Bidang TKJ</h4><p>Cek PSU, kabel LAN, baterai CMOS.</p></div>
-                    
-                    <div class="content-section">
-                        <h3>Studi Kasus TKJ: Pengecekan Kabel UTP (LAN)</h3>
-                        <p>Selain LAN Tester, AVO-meter ampuh mendeteksi kabel tembaga putus dengan mode Kontinuitas (Buzzer).</p>
-                        <div class="info-box">
-                            <h4>Langkah Troubleshooting Kabel</h4>
-                            <ol style="margin-left: 1.5rem;">
-                                <li>Putar saklar ke mode Buzzer (simbol gelombang suara) atau Ohm x1.</li>
-                                <li>Sentuhkan probe merah ke Pin 1 (misal: Putih-Oranye) ujung A, probe hitam ke Pin 1 ujung B.</li>
-                                <li>Jika berbunyi "bip" atau jarum ke 0Ω → kabel utuh.</li>
-                                <li>Jika hening / jarum ∞ → kabel putus, crimping ulang RJ-45.</li>
-                            </ol>
-                        </div>
-                    </div>`
-                },
-                "kalkulator": { t: "KALKULATOR", h: "HUKUM OHM", c: `<div class="calculator-container"><h3 class="calculator-title">Kalkulator Hukum Ohm</h3><p>V = I × R</p><div class="formula-display"><strong>V = I·R &nbsp;|&nbsp; I = V/R &nbsp;|&nbsp; R = V/I</strong></div><div class="calculator-grid" id="calculator-grid"><div class="input-group"><label>Tegangan (V)</label><input type="number" id="voltage" placeholder="Volt" step="0.1"></div><div class="input-group"><label>Arus (I)</label><input type="number" id="current" placeholder="Ampere" step="0.01"></div><div class="input-group"><label>Hambatan (R)</label><input type="number" id="resistance" placeholder="Ohm" step="0.1"></div></div><div class="calculator-buttons"><button class="calc-btn primary" id="calculate-btn">HITUNG</button><button class="calc-btn secondary" id="reset-btn">RESET</button><button class="calc-btn secondary" id="example-btn">CONTOH</button></div><div class="calculator-result" id="result" style="display:none;"><div class="result-value" id="result-value">0</div><div class="result-unit" id="result-unit"></div><div id="calculation-detail" style="margin-top:12px;"></div></div></div>` },
-                "info": { t: "TABEL", h: "REFERENSI", c: `<h3>Perbandingan</h3><table><tr><th>Aspek</th><th>Analog</th><th>Digital</th></tr><tr><td>Pembacaan</td><td>Jarum</td><td>LCD</td></tr><tr><td>Akurasi</td><td>±2-3%</td><td>±0.5%</td></tr></table><div class="component-list"><div class="component-item"><div class="component-title">Penyimpanan</div><p>Kering, lepas baterai</p></div></div>` }
-            };
+        <div class="portfolio-item">
+            <span class="year">2024</span>
+            <h4>Implementasi Private Cloud System (Univ. Teknologi Nusantara)</h4>
+            <p>Membangun arsitektur cloud mandiri untuk sistem informasi akademik kampus dengan skalabilitas tinggi untuk menampung lonjakan akses hingga 50.000 mahasiswa secara bersamaan.</p>
+        </div>
 
-            // ---------- VIEW ----------
-            const View = {
-                renderNav(activeKey) {
-                    const container = document.getElementById('nav-items');
-                    container.innerHTML = Object.keys(Model).map(k => 
-                        `<button class="nav-link ${k===activeKey?'active':''}" data-key="${k}">${Model[k].t}</button>`
-                    ).join('');
-                },
-                renderContent(key) {
-                    const page = Model[key] || Model.home;
-                    const app = document.getElementById('app');
-                    app.innerHTML = `<h2>${page.h}</h2><hr><div class="content">${page.c}</div>`;
-                    if (key === 'kalkulator') Controller.initCalculator();
-                    Controller.resetProgressBar();
-                    setTimeout(() => Controller.setupProgressBar(), 20);
-                },
-                updateLayoutIcon(isMobile) {
-                    const icon = document.getElementById('layout-icon');
-                    icon.textContent = isMobile ? '◰' : '◫';
-                },
-                updateProgressBar(percent) {
-                    const bar = document.getElementById('progress-bar');
-                    const container = document.getElementById('progress-container');
-                    if (bar) bar.style.width = `${percent}%`;
-                    if (percent > 1 && percent < 99) container.classList.add('visible');
-                    else if (percent >= 99) setTimeout(() => container.classList.remove('visible'), 600);
-                    else container.classList.remove('visible');
-                }
-            };
+        <div class="portfolio-item">
+            <span class="year">2025</span>
+            <h4>Disaster Recovery Data Setup (RS Medika Sentosa)</h4>
+            <p>Penerapan sistem pencadangan data rekam medis pasien secara otomatis dan terenkripsi. Kami membangun pusat pemulihan bencana (DRC) antar-kota untuk memastikan keamanan data rumah sakit.</p>
+        </div>
 
-            // ---------- CONTROLLER ----------
-            const Controller = {
-                init() {
-                    this.loadLayoutPref();
-                    document.getElementById('layout-toggle').onclick = () => this.toggleLayout();
-                    window.addEventListener('hashchange', () => this.handleRoute());
-                    this.handleRoute();
-                    this.setupProgressBar();
-                    document.getElementById('nav-items').addEventListener('click', (e) => {
-                        const btn = e.target.closest('.nav-link');
-                        if(btn && btn.dataset.key) this.navigateTo(btn.dataset.key);
-                    });
-                },
-                handleRoute() {
-                    const key = location.hash.substring(1) || 'home';
-                    View.renderNav(key);
-                    View.renderContent(key);
-                    history.replaceState(null, null, `#${key}`);
-                },
-                navigateTo(key) { location.hash = key; },
-                toggleLayout() {
-                    const body = document.body;
-                    const isMobile = body.classList.toggle('mobile-mode');
-                    localStorage.setItem('avo-layout', isMobile ? 'mobile' : 'desktop');
-                    View.updateLayoutIcon(isMobile);
-                },
-                loadLayoutPref() {
-                    const saved = localStorage.getItem('avo-layout');
-                    if (saved === 'mobile' || (window.innerWidth <= 768 && saved !== 'desktop')) {
-                        document.body.classList.add('mobile-mode');
-                        View.updateLayoutIcon(true);
-                    } else {
-                        View.updateLayoutIcon(false);
-                    }
-                },
-                setupProgressBar() {
-                    const main = document.querySelector('main');
-                    if(!main) return;
-                    const handler = () => {
-                        const article = document.querySelector('article');
-                        if(!article) return;
-                        const articleH = article.offsetHeight;
-                        const top = article.offsetTop;
-                        const scroll = main.scrollTop;
-                        const winH = main.clientHeight;
-                        let progress = 0;
-                        if(scroll >= top) {
-                            const visible = Math.min(scroll+winH, top+articleH) - Math.max(scroll, top);
-                            progress = Math.min(100, Math.max(0, (visible/articleH)*100));
-                        }
-                        View.updateProgressBar(progress);
-                    };
-                    main.addEventListener('scroll', handler);
-                    setTimeout(handler, 60);
-                },
-                resetProgressBar() { View.updateProgressBar(0); },
-                
-                initCalculator() {
-                    const v = document.getElementById('voltage');
-                    const i = document.getElementById('current');
-                    const r = document.getElementById('resistance');
-                    const resDiv = document.getElementById('result');
-                    const valSpan = document.getElementById('result-value');
-                    const unitSpan = document.getElementById('result-unit');
-                    const detail = document.getElementById('calculation-detail');
-                    
-                    const calc = () => {
-                        const vVal = v.value, iVal = i.value, rVal = r.value;
-                        const filled = [v,i,r].filter(inp => inp.value !== '').length;
-                        if(filled < 2) { alert('Isi minimal 2 nilai'); return; }
-                        let result = 0, unit = '', det = '';
-                        const V = parseFloat(vVal), I = parseFloat(iVal), R = parseFloat(rVal);
-                        if(vVal&&iVal&&!rVal) { result = V/I; unit='Ω'; det=`R = ${V}V / ${I}A = ${result.toFixed(3)} Ω`; }
-                        else if(vVal&&!iVal&&rVal) { result = V/R; unit='A'; det=`I = ${V}V / ${R}Ω = ${result.toFixed(3)} A`; }
-                        else if(!vVal&&iVal&&rVal) { result = I*R; unit='V'; det=`V = ${I}A × ${R}Ω = ${result.toFixed(3)} V`; }
-                        else if(vVal&&iVal&&rVal) {
-                            const calcR = V/I; const diff = Math.abs(calcR-R); const pDiff = (diff/R)*100;
-                            result = pDiff; unit='% error';
-                            det = `R hitung = ${calcR.toFixed(3)} Ω. Selisih ${diff.toFixed(3)} (${pDiff.toFixed(2)}%)`;
-                        }
-                        valSpan.textContent = result.toFixed(3);
-                        unitSpan.textContent = unit;
-                        detail.innerHTML = det;
-                        resDiv.style.display = 'block';
-                    };
-                    document.getElementById('calculate-btn').onclick = calc;
-                    document.getElementById('reset-btn').onclick = ()=>{
-                        v.value=i.value=r.value=''; resDiv.style.display='none';
-                    };
-                    document.getElementById('example-btn').onclick = ()=>{
-                        v.value=12; i.value=0.5; r.value=''; calc();
-                    };
-                }
-            };
+        <div class="portfolio-item">
+            <span class="year">2025</span>
+            <h4>Maintenance Server & Jaringan (e-Commerce BelanjaCepat)</h4>
+            <p>Penyediaan layanan dukungan teknis proaktif dan pemeliharaan rutin untuk puluhan server fisik milik klien guna menjaga stabilitas jaringan dari lonjakan trafik pengunjung.</p>
+        </div>
+    </section>
 
-            window.addEventListener('resize', () => {
-                if (window.innerWidth <= 768 && !localStorage.getItem('avo-layout')) {
-                    document.body.classList.add('mobile-mode'); View.updateLayoutIcon(true);
-                }
-            });
-            document.addEventListener('DOMContentLoaded', () => Controller.init());
-        })();
-    </script>
+    <!-- Mengapa Memilih Kami -->
+    <section id="keunggulan" style="background-color: #F4F4F9;">
+        <h2 class="section-title">Mengapa Memilih Kami?</h2>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">Sebagai pelopor solusi infrastruktur digital modern, MCC berkomitmen penuh untuk menghadirkan layanan andal yang menjadi motor penggerak transformasi bisnis Anda.</p>
+        
+        <div class="grid-container">
+            <div class="card">
+                <h3>Jaminan Uptime 99.9%</h3>
+                <p>Memastikan seluruh layanan bisnis dan operasional digital Anda terus berjalan tanpa hambatan (zero downtime).</p>
+            </div>
+            <div class="card">
+                <h3>Infrastruktur Tier-3</h3>
+                <p>Didukung fasilitas data center berstandar internasional (Tier-3) dengan sistem daya listrik cadangan (redundant power) dan pendingin mutakhir.</p>
+            </div>
+            <div class="card">
+                <h3>Keamanan Data Tingkat Tinggi</h3>
+                <p>Implementasi enkripsi data berlapis, pengawasan penuh, dan perlindungan firewall terpadu guna membentengi aset digital Anda.</p>
+            </div>
+            <div class="card">
+                <h3>Skalabilitas Fleksibel</h3>
+                <p>Kapasitas penyimpanan dan komputasi adaptif yang dapat disesuaikan secara instan seiring laju pertumbuhan bisnis Anda.</p>
+            </div>
+            <div class="card">
+                <h3>Dukungan Teknis 24/7</h3>
+                <p>Pendampingan penuh oleh tim IT Engineer profesional bersertifikasi yang siap sedia 24 jam sehari, 7 hari seminggu.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Hubungi Kami -->
+    <footer id="kontak">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Masa Depan Digital Anda</h3>
+                <p>PT Mogam Cloud Computing (MCC) siap menjadi mitra teknologi strategis jangka panjang yang mendampingi setiap fase pertumbuhan bisnis Anda menuju efisiensi tanpa batas.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Kantor Pusat</h3>
+                <p>Gedung Mogam Tower, Lantai 12-14<br>
+                Jl. Jend. Sudirman Kav. 50<br>
+                Jakarta Pusat, DKI Jakarta 10220</p>
+                <p><strong>Telepon:</strong><br>(021) 555-0199 / (021) 555-0198</p>
+            </div>
+            <div class="footer-col">
+                <h3>Informasi Digital</h3>
+                <p><strong>Email Kemitraan:</strong><br><a href="mailto:info@mccloud.com">info@mccloud.com</a></p>
+                <p><strong>Layanan Pelanggan:</strong><br><a href="mailto:support@mccloud.com">support@mccloud.com</a></p>
+                <p><strong>Website:</strong><br><a href="http://www.mccloud.com" target="_blank">www.mccloud.com</a></p>
+            </div>
+            <div class="footer-col">
+                <h3>Media Sosial</h3>
+                <a href="#">LinkedIn: PT Mogam Cloud Computing</a>
+                <a href="#">Instagram: @mccloud.id</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 PT Mogam Cloud Computing (MCC) - Subsidiary of Mogam Industries. All Rights Reserved.
+        </div>
+    </footer>
+
 </body>
 </html>
