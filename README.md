@@ -1,2 +1,2 @@
-# mcc
+# mcc.github.io
 Tugas web
