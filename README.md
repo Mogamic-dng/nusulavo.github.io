@@ -1,2 +1,2 @@
-# nusulavo.github.io
+# mcc
 Tugas web
